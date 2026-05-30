@@ -97,17 +97,15 @@ button { cursor: pointer; font-family: inherit; }
 
 .nav { width: 100%; display: flex; align-items: center; justify-content: space-between; }
 
-/* ── Out Of Order logo in nav — Cormorant Garamond, spaced, all white ── */
+/* ── OutOfOrder logo in nav — Cormorant Garamond, no spaces, all white ── */
 .nav-logo {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #ffffff;
 }
-/* All three parts white in the nav logo */
-.logo-out, .logo-of, .logo-order { color: #ffffff; }
 
 .nav-back {
   font-size: 11px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase;
@@ -295,49 +293,41 @@ button { cursor: pointer; font-family: inherit; }
   color: var(--text-dim); max-width: 52ch; line-height: 1.75; margin-top: 2px;
 }
 
-/* ─── Gallery grid ──────────────────────────────────────────────────────────── */
+/* ─── Gallery grid — full images, zero cropping ─────────────────────────────── */
 
 .gallery-grid {
-  columns: 3; column-gap: 4px; padding: 4px 4px 100px;
+  columns: 3;
+  column-gap: 3px;
+  padding: 3px 3px 80px;
 }
 @media (max-width: 1000px) { .gallery-grid { columns: 2; } }
 @media (max-width: 520px)  { .gallery-grid { columns: 1; } }
 
 .gallery-item {
-  break-inside: avoid; margin-bottom: 4px;
-  cursor: pointer; position: relative;
+  break-inside: avoid;
+  margin-bottom: 3px;
+  cursor: pointer;
+  position: relative;
 }
-.gallery-item:focus { outline: 1px solid rgba(255,255,255,0.25); outline-offset: 2px; }
+.gallery-item:focus { outline: 1px solid rgba(255,255,255,0.2); outline-offset: 1px; }
 
-/* Skeleton shimmer */
-.img-skeleton {
-  position: absolute; inset: 0;
-  background: linear-gradient(100deg, var(--bg-card) 30%, var(--bg-elevated) 50%, var(--bg-card) 70%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s ease infinite;
-  border-radius: var(--radius);
-  pointer-events: none;
-}
-.gallery-item.img-ready .img-skeleton { display: none; }
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
+/* Each image shown at its full natural aspect ratio — no height set, no overflow */
 .gallery-img {
-  width: 100%; height: auto;
+  width: 100%;
+  height: auto;
   display: block;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
 }
-.gallery-item.img-ready .gallery-img { opacity: 1; }
+.gallery-img.img-loaded { opacity: 1; }
 
-/* Very lightweight hover — no transform or repaint */
+/* Hover: subtle overlay only */
 .gallery-item::after {
-  content: ''; position: absolute; inset: 0;
-  background: transparent; pointer-events: none;
-  transition: background 0.22s ease;
+  content: '';
+  position: absolute; inset: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: background 0.2s ease;
 }
 .gallery-item:hover::after { background: rgba(0,0,0,0.1); }
 

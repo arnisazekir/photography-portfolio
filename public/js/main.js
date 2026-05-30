@@ -1,3 +1,16 @@
+// ─── Gallery image fade-in (src already set in HTML, just detect load) ───────
+(function () {
+  document.querySelectorAll('.gallery-img').forEach(img => {
+    const markLoaded = () => img.classList.add('img-loaded');
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+    } else {
+      img.addEventListener('load',  markLoaded, { once: true });
+      img.addEventListener('error', markLoaded, { once: true }); // show broken rather than blank
+    }
+  });
+})();
+
 // ─── Scroll-reveal for homepage segment cards ─────────────────────────────────
 (function () {
   const cards = document.querySelectorAll('.reveal-card');
@@ -16,54 +29,6 @@
   cards.forEach(c => io.observe(c));
 })();
 
-// ─── Lazy-load with IntersectionObserver + skeleton handling ──────────────────
-(function lazyLoad() {
-  const items = document.querySelectorAll('.gallery-item');
-  if (!items.length) return;
-
-  function reveal(item) {
-    const img = item.querySelector('.gallery-img');
-    if (!img) return;
-
-    const src = img.dataset.src;
-    if (!src) { item.classList.add('img-ready'); return; }
-
-    // If already cached, show immediately
-    if (img.complete && img.naturalWidth) {
-      img.src = src;
-      item.classList.add('img-ready');
-      return;
-    }
-
-    img.onload = () => item.classList.add('img-ready');
-
-    img.onerror = () => {
-      // Broken image fallback — grey placeholder, no disappearing blank
-      img.alt = 'Image unavailable';
-      img.style.opacity = '0.15';
-      img.style.height = '120px';
-      img.style.background = 'var(--bg-card)';
-      item.classList.add('img-ready');
-    };
-
-    img.src = src;
-  }
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        reveal(e.target);
-        io.unobserve(e.target);
-      });
-    }, { rootMargin: '300px 0px' }); // start loading 300px before entering viewport
-
-    items.forEach(item => io.observe(item));
-  } else {
-    // Fallback for older browsers — load everything
-    items.forEach(reveal);
-  }
-})();
 
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────

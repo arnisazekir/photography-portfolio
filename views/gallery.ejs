@@ -13,9 +13,7 @@
   <header class="site-header">
     <nav class="nav">
       <a href="/" class="nav-back">← Archive</a>
-      <span class="nav-logo">
-        Out Of Order
-      </span>
+      <span class="nav-logo">OutOfOrder</span>
     </nav>
   </header>
 
@@ -27,7 +25,6 @@
     </div>
   </section>
 
-  <!-- Segment nav strip -->
   <div class="segment-nav">
     <% segments.forEach(function(s) { %>
       <a href="/gallery/<%= s.id %>"
@@ -37,28 +34,17 @@
     <% }); %>
   </div>
 
-  <!-- Gallery — thumbnails in masonry, full-res in lightbox -->
+  <!-- Full images, never cropped — src set directly, browser lazy-loads natively -->
   <main class="gallery-grid" id="gallery">
     <% if (images.length === 0) { %>
       <p class="empty-state">No images in this gallery yet.</p>
     <% } %>
 
     <% images.forEach(function(img, i) { %>
-      <div
-        class="gallery-item"
-        data-index="<%= i %>"
-        data-full="<%= img.path %>"
-        role="button"
-        tabindex="0"
-        aria-label="Open photo <%= i + 1 %>"
-      >
-        <!-- Skeleton shown while image loads -->
-        <div class="img-skeleton"></div>
-
+      <div class="gallery-item" data-index="<%= i %>" role="button" tabindex="0">
         <img
-          src=""
-          data-src="<%= img.thumbPath || img.path %>"
-          alt="<%= segment.name %> – photo <%= i + 1 %>"
+          src="<%= img.thumbPath || img.path %>"
+          alt="<%= segment.name %> — <%= i + 1 %>"
           loading="lazy"
           class="gallery-img"
           draggable="false"
@@ -67,22 +53,21 @@
     <% }); %>
   </main>
 
-  <!-- Lightbox — object-fit: contain, never cropped, always centered -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
     <div class="lightbox-spinner" id="lbSpinner"></div>
     <img id="lbImage" class="lightbox-img" src="" alt="">
-    <button class="lightbox-close" id="lbClose" aria-label="Close (Esc)">✕</button>
-    <button class="lightbox-prev"  id="lbPrev"  aria-label="Previous (←)">‹</button>
-    <button class="lightbox-next"  id="lbNext"  aria-label="Next (→)">›</button>
+    <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lightbox-prev"  id="lbPrev"  aria-label="Previous">‹</button>
+    <button class="lightbox-next"  id="lbNext"  aria-label="Next">›</button>
     <div class="lightbox-counter" id="lbCounter"></div>
   </div>
 
   <footer class="site-footer">
-    <p>Selected Visual Work &mdash; All rights reserved</p>
+    <p>OutOfOrder &mdash; Personal Visual Portfolio</p>
   </footer>
 
   <script>
-    // Use thumbPath for lightbox — 900px high-quality progressive JPEG, works on any host
     window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.thumbPath || i.path)) %>;
   </script>
   <script src="/js/transitions.js"></script>
