@@ -59,7 +59,7 @@
 
   function show(idx) {
     lbImage.classList.remove('loaded');
-    lbImage.style.opacity = '0';
+    lbImage.style.opacity = '';   // clear any inline override — let CSS class control opacity
     if (lbSpinner) lbSpinner.style.display = 'block';
 
     const loader = new Image();
