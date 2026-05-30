@@ -21,91 +21,66 @@
 
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
-(function lightbox() {
-  const fullPaths = window.GALLERY_FULLPATHS || [];
-  if (!fullPaths.length) return;
+(function () {
+  var paths   = window.GALLERY_FULLPATHS || [];
+  if (!paths.length) return;
 
-  const lb        = document.getElementById('lightbox');
-  const lbImage   = document.getElementById('lbImage');
-  const lbSpinner = document.getElementById('lbSpinner');
-  const lbCounter = document.getElementById('lbCounter');
-  const lbClose   = document.getElementById('lbClose');
-  const lbPrev    = document.getElementById('lbPrev');
-  const lbNext    = document.getElementById('lbNext');
-  if (!lb || !lbImage) return;
+  var lb      = document.getElementById('lightbox');
+  var lbImg   = document.getElementById('lbImage');
+  var lbCount = document.getElementById('lbCounter');
+  var lbClose = document.getElementById('lbClose');
+  var lbPrev  = document.getElementById('lbPrev');
+  var lbNext  = document.getElementById('lbNext');
+  if (!lb || !lbImg) return;
 
-  let current = 0;
-  const cache = {};
+  var cur = 0;
 
-  function preload(idx) {
-    if (cache[idx] || idx < 0 || idx >= fullPaths.length) return;
-    const img = new Image(); img.src = fullPaths[idx]; cache[idx] = img;
+  function show(idx) {
+    cur = idx;
+    lbImg.src = paths[idx];          // set src directly — image shows immediately
+    if (lbCount) lbCount.textContent = (idx + 1) + ' / ' + paths.length;
   }
 
   function open(idx) {
-    current = idx;
+    show(idx);
     lb.classList.add('is-open');
     document.body.style.overflow = 'hidden';
-    show(idx);
-    preload(idx + 1); preload(idx - 1);
   }
 
   function close() {
     lb.classList.remove('is-open');
     document.body.style.overflow = '';
-    lbImage.classList.remove('loaded');
-    lbImage.src = '';
+    lbImg.src = '';
   }
 
-  function show(idx) {
-    lbImage.classList.remove('loaded');
-    lbImage.style.opacity = '';   // clear any inline override — let CSS class control opacity
-    if (lbSpinner) lbSpinner.style.display = 'block';
+  function prev() { show((cur - 1 + paths.length) % paths.length); }
+  function next() { show((cur + 1) % paths.length); }
 
-    const loader = new Image();
-    loader.onload = () => {
-      lbImage.src = fullPaths[idx];
-      if (lbSpinner) lbSpinner.style.display = 'none';
-      requestAnimationFrame(() => lbImage.classList.add('loaded'));
-      preload(idx + 1); preload(idx - 1);
-    };
-    loader.onerror = () => {
-      if (lbSpinner) lbSpinner.style.display = 'none';
-      lbImage.src = fullPaths[idx];
-      lbImage.classList.add('loaded');
-    };
-    loader.src = fullPaths[idx];
-    lbCounter.textContent = `${idx + 1}  /  ${fullPaths.length}`;
-  }
-
-  function prev() { current = (current - 1 + fullPaths.length) % fullPaths.length; show(current); }
-  function next() { current = (current + 1) % fullPaths.length; show(current); }
-
-  document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', () => open(Number(item.dataset.index)));
-    item.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') open(Number(item.dataset.index));
-    });
+  // Open on click
+  document.querySelectorAll('.gallery-item').forEach(function(item) {
+    item.addEventListener('click', function() { open(Number(item.dataset.index)); });
   });
 
-  lbClose.addEventListener('click', close);
-  lbPrev.addEventListener('click', e => { e.stopPropagation(); prev(); });
-  lbNext.addEventListener('click', e => { e.stopPropagation(); next(); });
-  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  // Controls
+  if (lbClose) lbClose.addEventListener('click', close);
+  if (lbPrev)  lbPrev.addEventListener('click',  function(e) { e.stopPropagation(); prev(); });
+  if (lbNext)  lbNext.addEventListener('click',  function(e) { e.stopPropagation(); next(); });
 
-  document.addEventListener('keydown', e => {
+  lb.addEventListener('click', function(e) { if (e.target === lb) close(); });
+
+  document.addEventListener('keydown', function(e) {
     if (!lb.classList.contains('is-open')) return;
     if (e.key === 'Escape')     close();
     if (e.key === 'ArrowLeft')  prev();
     if (e.key === 'ArrowRight') next();
   });
 
-  let tx = null;
-  lb.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-  lb.addEventListener('touchend', e => {
+  var tx = null;
+  lb.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend',   function(e) {
     if (tx === null) return;
-    const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+    var dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) { if (dx < 0) next(); else prev(); }
     tx = null;
   }, { passive: true });
 })();
