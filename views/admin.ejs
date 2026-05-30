@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Visual Portfolio</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <span class="admin-logo">V P</span>
+      <span class="admin-label">Admin</span>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="#upload-section" class="admin-nav-item">Upload</a>
+      <a href="#segments-section" class="admin-nav-item">Segments</a>
+      <a href="#add-segment-section" class="admin-nav-item">New Segment</a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <a href="/" class="admin-nav-item" target="_blank">View Site ↗</a>
+      <form action="/admin/logout" method="POST">
+        <button type="submit" class="btn btn--ghost admin-logout">Log out</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- ── Main content ────────────────────────────────────────────────────── -->
+  <main class="admin-main">
+
+    <% if (flash && flash.length) { %>
+      <div class="admin-flash admin-flash--ok"><%= flash %></div>
+    <% } %>
+    <% if (error && error.length) { %>
+      <div class="admin-flash admin-flash--err"><%= error %></div>
+    <% } %>
+
+    <!-- Toast notification (JS-driven) -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ── Upload section ─────────────────────────────────────────────── -->
+    <section class="admin-section" id="upload-section">
+      <h2 class="admin-section-title">Upload Photo</h2>
+
+      <form class="upload-form" id="uploadForm" enctype="multipart/form-data">
+        <div class="upload-drop-zone" id="dropZone">
+          <span class="drop-icon">+</span>
+          <span class="drop-label">Drop image here or click to choose</span>
+          <input type="file" id="fileInput" name="image" accept="image/jpeg,image/png,image/webp" hidden>
+        </div>
+        <div class="upload-preview-wrap" id="uploadPreviewWrap" style="display:none">
+          <img id="uploadPreview" class="upload-preview-img" src="" alt="">
+          <div class="upload-analysis" id="uploadAnalysis"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="segmentSelect">Segment / Category</label>
+          <select class="form-select" id="segmentSelect" name="segmentId" required>
+            <option value="">— Choose segment —</option>
+            <% segments.forEach(function(s) { %>
+              <option value="<%= s.id %>"><%= s.name %></option>
+            <% }); %>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="uploadBtn">Upload</button>
+        <span class="upload-status" id="uploadStatus"></span>
+      </form>
+    </section>
+
+    <!-- ── Segments section ───────────────────────────────────────────── -->
+    <section class="admin-section" id="segments-section">
+      <h2 class="admin-section-title">Segments</h2>
+
+      <% segments.forEach(function(seg) { %>
+        <div class="segment-block" id="seg-<%= seg.id %>">
+
+          <!-- Segment header -->
+          <div class="segment-block-header">
+            <div class="segment-block-meta">
+              <span class="segment-block-vibe"><%= seg.vibe %></span>
+              <h3 class="segment-block-name" id="name-<%= seg.id %>"><%= seg.name %></h3>
+            </div>
+            <div class="segment-block-actions">
+              <a href="/admin/reorder/<%= seg.id %>" class="btn btn--ghost btn--sm">Reorder</a>
+              <button class="btn btn--ghost btn--sm" onclick="editSegment('<%= seg.id %>', '<%= seg.name.replace(/'/g, '\\\'') %>', '<%= (seg.description||'').replace(/'/g, '\\\'') %>', '<%= seg.vibe %>')">
+                Edit
+              </button>
+              <button class="btn btn--danger btn--sm" onclick="deleteSegment('<%= seg.id %>', '<%= seg.name.replace(/'/g, '\\\'') %>')">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <!-- Image grid -->
+          <div class="admin-img-grid" id="grid-<%= seg.id %>" data-segment="<%= seg.id %>">
+            <% const sorted = seg.images.slice().sort((a,b) => a.order - b.order); %>
+            <% sorted.forEach(function(img) { %>
+              <div class="admin-img-card" data-filename="<%= img.filename %>">
+                <img src="<%= img.thumbPath || img.path %>" alt="" loading="lazy" class="admin-img-thumb">
+                <div class="admin-img-overlay">
+                  <span class="admin-img-vibe"><%= img.suggestedVibe || '' %></span>
+                  <div class="admin-img-btns">
+                    <button class="btn btn--ghost btn--xs" onclick="moveImage('<%= seg.id %>', '<%= img.filename %>')">Move</button>
+                    <button class="btn btn--danger btn--xs" onclick="deleteImage('<%= seg.id %>', '<%= img.filename %>')">Delete</button>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+
+          <% if (seg.images.length === 0) { %>
+            <p class="empty-hint">No images yet. Upload one above.</p>
+          <% } %>
+
+          <p class="reorder-hint">Drag thumbnails to reorder &mdash; changes save automatically.</p>
+        </div>
+      <% }); %>
+
+      <% if (!segments || segments.length === 0) { %>
+        <p class="empty-state">No segments yet. Create one below.</p>
+      <% } %>
+    </section>
+
+    <!-- ── Add segment section ────────────────────────────────────────── -->
+    <section class="admin-section" id="add-segment-section">
+      <h2 class="admin-section-title">New Segment</h2>
+
+      <form class="add-segment-form" id="addSegmentForm">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" name="name" placeholder="e.g. Golden Hour" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-input form-textarea" name="description" placeholder="Short description of the mood or aesthetic…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vibe</label>
+          <select class="form-select" name="vibe">
+            <option value="neutral">Neutral</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="dark">Dark</option>
+            <option value="atmospheric">Atmospheric</option>
+            <option value="urban">Urban</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="warm">Warm</option>
+            <option value="cool">Cool</option>
+            <option value="earthy">Earthy</option>
+            <option value="tonal">Tonal</option>
+            <option value="minimal">Minimal</option>
+            <option value="moody">Moody</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn--primary">Create Segment</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- ── Edit segment modal ──────────────────────────────────────────────── -->
+  <div class="modal" id="editModal" aria-hidden="true">
+    <div class="modal-card">
+      <h3 class="modal-title">Edit Segment</h3>
+      <form id="editSegmentForm">
+        <input type="hidden" id="editSegmentId">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" id="editSegmentName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-input form-textarea" id="editSegmentDesc"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vibe</label>
+          <select class="form-select" id="editSegmentVibe">
+            <option value="neutral">Neutral</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="dark">Dark</option>
+            <option value="atmospheric">Atmospheric</option>
+            <option value="urban">Urban</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="warm">Warm</option>
+            <option value="cool">Cool</option>
+            <option value="earthy">Earthy</option>
+            <option value="tonal">Tonal</option>
+            <option value="minimal">Minimal</option>
+            <option value="moody">Moody</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn--primary">Save</button>
+          <button type="button" class="btn btn--ghost" onclick="closeModal('editModal')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Move image modal ───────────────────────────────────────────────── -->
+  <div class="modal" id="moveModal" aria-hidden="true">
+    <div class="modal-card">
+      <h3 class="modal-title">Move Image</h3>
+      <input type="hidden" id="moveSrcSegment">
+      <input type="hidden" id="moveFilename">
+      <div class="form-group">
+        <label class="form-label">Move to segment</label>
+        <select class="form-select" id="moveTargetSegment">
+          <% segments.forEach(function(s) { %>
+            <option value="<%= s.id %>"><%= s.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn--primary" onclick="confirmMove()">Move</button>
+        <button class="btn btn--ghost" onclick="closeModal('moveModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sortable.js for drag-to-reorder -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script>
+    // Pass segment data for move dropdown refreshing
+    window.SEGMENTS = <%- JSON.stringify(segments.map(s => ({ id: s.id, name: s.name }))) %>;
+  </script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

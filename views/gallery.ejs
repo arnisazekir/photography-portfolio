@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= segment.name %> — Visual Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="/" class="nav-back">← Archive</a>
+      <span class="nav-logo">V P</span>
+    </nav>
+  </header>
+
+  <section class="gallery-hero">
+    <div class="gallery-hero-inner">
+      <span class="gallery-vibe"><%= segment.vibe %></span>
+      <h1 class="gallery-title"><%= segment.name %></h1>
+      <p class="gallery-desc"><%= segment.description %></p>
+    </div>
+  </section>
+
+  <!-- Segment nav strip -->
+  <div class="segment-nav">
+    <% segments.forEach(function(s) { %>
+      <a href="/gallery/<%= s.id %>"
+         class="segment-nav-item<%= s.id === segment.id ? ' active' : '' %>">
+        <%= s.name %>
+      </a>
+    <% }); %>
+  </div>
+
+  <!-- Gallery — thumbnails in masonry, full-res in lightbox -->
+  <main class="gallery-grid" id="gallery">
+    <% if (images.length === 0) { %>
+      <p class="empty-state">No images in this gallery yet.</p>
+    <% } %>
+
+    <% images.forEach(function(img, i) { %>
+      <div
+        class="gallery-item"
+        data-index="<%= i %>"
+        data-full="<%= img.path %>"
+        role="button"
+        tabindex="0"
+        aria-label="Open photo <%= i + 1 %>"
+      >
+        <!-- Skeleton shown while image loads -->
+        <div class="img-skeleton"></div>
+
+        <img
+          src=""
+          data-src="<%= img.thumbPath || img.path %>"
+          alt="<%= segment.name %> – photo <%= i + 1 %>"
+          loading="lazy"
+          class="gallery-img"
+          draggable="false"
+        >
+      </div>
+    <% }); %>
+  </main>
+
+  <!-- Lightbox — uses full-resolution path, object-fit: contain -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="lightbox-close" id="lbClose" aria-label="Close (Esc)">✕</button>
+    <button class="lightbox-prev"  id="lbPrev"  aria-label="Previous (←)">‹</button>
+    <button class="lightbox-next"  id="lbNext"  aria-label="Next (→)">›</button>
+
+    <div class="lightbox-inner" id="lbInner">
+      <div class="lightbox-spinner" id="lbSpinner"></div>
+      <img id="lbImage" class="lightbox-img" src="" alt="">
+    </div>
+
+    <div class="lightbox-counter" id="lbCounter"></div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Selected Visual Work &mdash; All rights reserved</p>
+  </footer>
+
+  <script>
+    // Full-resolution paths for lightbox (never the thumbnail)
+    window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.path)) %>;
+  </script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

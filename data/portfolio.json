@@ -1,0 +1,758 @@
+{
+  "segments": [
+    {
+      "id": "monochrome-studies",
+      "sourceFolder": "bnw",
+      "name": "Monochrome Studies",
+      "description": "Black and white images focused on contrast, form, and shadow.",
+      "vibe": "monochrome",
+      "dominantColors": [],
+      "images": [
+        {
+          "filename": "DSC09220_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09220_copy.JPG",
+          "order": 2,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09220_copy.JPG"
+        },
+        {
+          "filename": "DSC09223.JPG",
+          "path": "/uploads/photos/bnw/DSC09223.JPG",
+          "order": 3,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09223.JPG"
+        },
+        {
+          "filename": "DSC09277_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09277_copy.JPG",
+          "order": 4,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09277_copy.JPG"
+        },
+        {
+          "filename": "DSC09361_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09361_copy.JPG",
+          "order": 10,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09361_copy.JPG"
+        },
+        {
+          "filename": "DSC09382_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09382_copy.JPG",
+          "order": 5,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09382_copy.JPG"
+        },
+        {
+          "filename": "DSC09383_copy_2.JPG",
+          "path": "/uploads/photos/bnw/DSC09383_copy_2.JPG",
+          "order": 6,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09383_copy_2.JPG"
+        },
+        {
+          "filename": "DSC09392_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09392_copy.JPG",
+          "order": 7,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09392_copy.JPG"
+        },
+        {
+          "filename": "DSC09394_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09394_copy.JPG",
+          "order": 8,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09394_copy.JPG"
+        },
+        {
+          "filename": "DSC09400_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09400_copy.JPG",
+          "order": 1,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09400_copy.JPG"
+        },
+        {
+          "filename": "DSC09410_copy_2.JPG",
+          "path": "/uploads/photos/bnw/DSC09410_copy_2.JPG",
+          "order": 9,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09410_copy_2.JPG"
+        },
+        {
+          "filename": "DSC09525_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09525_copy.JPG",
+          "order": 11,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09525_copy.JPG"
+        },
+        {
+          "filename": "DSC09731_copy.JPG",
+          "path": "/uploads/photos/bnw/DSC09731_copy.JPG",
+          "order": 12,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09731_copy.JPG"
+        },
+        {
+          "filename": "DSC09735.JPG",
+          "path": "/uploads/photos/bnw/DSC09735.JPG",
+          "order": 13,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09735.JPG"
+        },
+        {
+          "filename": "DSC09783.JPG",
+          "path": "/uploads/photos/bnw/DSC09783.JPG",
+          "order": 14,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09783.JPG"
+        },
+        {
+          "filename": "DSC09793.JPG",
+          "path": "/uploads/photos/bnw/DSC09793.JPG",
+          "order": 15,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09793.JPG"
+        },
+        {
+          "filename": "DSC09860.JPG",
+          "path": "/uploads/photos/bnw/DSC09860.JPG",
+          "order": 16,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09860.JPG"
+        },
+        {
+          "filename": "DSC09883.JPG",
+          "path": "/uploads/photos/bnw/DSC09883.JPG",
+          "order": 17,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09883.JPG"
+        },
+        {
+          "filename": "DSC09886.JPG",
+          "path": "/uploads/photos/bnw/DSC09886.JPG",
+          "order": 18,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09886.JPG"
+        },
+        {
+          "filename": "DSC09894.JPG",
+          "path": "/uploads/photos/bnw/DSC09894.JPG",
+          "order": 19,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09894.JPG"
+        },
+        {
+          "filename": "DSC09944.JPG",
+          "path": "/uploads/photos/bnw/DSC09944.JPG",
+          "order": 20,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09944.JPG"
+        },
+        {
+          "filename": "DSC09960.JPG",
+          "path": "/uploads/photos/bnw/DSC09960.JPG",
+          "order": 21,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09960.JPG"
+        },
+        {
+          "filename": "DSC09962.JPG",
+          "path": "/uploads/photos/bnw/DSC09962.JPG",
+          "order": 22,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09962.JPG"
+        },
+        {
+          "filename": "DSC09973.JPG",
+          "path": "/uploads/photos/bnw/DSC09973.JPG",
+          "order": 23,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09973.JPG"
+        },
+        {
+          "filename": "DSC09974.JPG",
+          "path": "/uploads/photos/bnw/DSC09974.JPG",
+          "order": 24,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09974.JPG"
+        },
+        {
+          "filename": "DSC09975.JPG",
+          "path": "/uploads/photos/bnw/DSC09975.JPG",
+          "order": 25,
+          "dominantColors": [],
+          "suggestedVibe": "monochrome",
+          "thumbPath": "/uploads/thumbs/bnw/DSC09975.JPG"
+        }
+      ]
+    },
+    {
+      "id": "nocturnal-nature",
+      "sourceFolder": "dark-forest",
+      "name": "Nocturnal Nature",
+      "description": "Deep atmospheric frames where light and dark meet the forest.",
+      "vibe": "atmospheric",
+      "dominantColors": [],
+      "images": [
+        {
+          "filename": "DSC08462.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08462.JPG",
+          "order": 1,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08462.JPG"
+        },
+        {
+          "filename": "DSC08463.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08463.JPG",
+          "order": 2,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08463.JPG"
+        },
+        {
+          "filename": "DSC08464.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08464.JPG",
+          "order": 3,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08464.JPG"
+        },
+        {
+          "filename": "DSC08509.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08509.JPG",
+          "order": 4,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08509.JPG"
+        },
+        {
+          "filename": "DSC08514.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08514.JPG",
+          "order": 5,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08514.JPG"
+        },
+        {
+          "filename": "DSC08525.JPG",
+          "path": "/uploads/photos/dark-forest/DSC08525.JPG",
+          "order": 6,
+          "dominantColors": [],
+          "suggestedVibe": "atmospheric",
+          "thumbPath": "/uploads/thumbs/dark-forest/DSC08525.JPG"
+        }
+      ]
+    },
+    {
+      "id": "urban-fragments",
+      "sourceFolder": "urban",
+      "name": "Urban Fragments",
+      "description": "Concrete geometry, city light, and the quiet life between structures.",
+      "vibe": "urban",
+      "dominantColors": [],
+      "images": [
+        {
+          "filename": "DSC00578.JPG",
+          "path": "/uploads/photos/urban/DSC00578.JPG",
+          "order": 1,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC00578.JPG"
+        },
+        {
+          "filename": "DSC08184.JPG",
+          "path": "/uploads/photos/urban/DSC08184.JPG",
+          "order": 2,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08184.JPG"
+        },
+        {
+          "filename": "DSC08190.JPG",
+          "path": "/uploads/photos/urban/DSC08190.JPG",
+          "order": 3,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08190.JPG"
+        },
+        {
+          "filename": "DSC08195_copy.JPG",
+          "path": "/uploads/photos/urban/DSC08195_copy.JPG",
+          "order": 4,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08195_copy.JPG"
+        },
+        {
+          "filename": "DSC08197.JPG",
+          "path": "/uploads/photos/urban/DSC08197.JPG",
+          "order": 5,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08197.JPG"
+        },
+        {
+          "filename": "DSC08247.JPG",
+          "path": "/uploads/photos/urban/DSC08247.JPG",
+          "order": 6,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08247.JPG"
+        },
+        {
+          "filename": "DSC08257.JPG",
+          "path": "/uploads/photos/urban/DSC08257.JPG",
+          "order": 7,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08257.JPG"
+        },
+        {
+          "filename": "DSC08259.JPG",
+          "path": "/uploads/photos/urban/DSC08259.JPG",
+          "order": 8,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08259.JPG"
+        },
+        {
+          "filename": "DSC08264.JPG",
+          "path": "/uploads/photos/urban/DSC08264.JPG",
+          "order": 9,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08264.JPG"
+        },
+        {
+          "filename": "DSC08272.JPG",
+          "path": "/uploads/photos/urban/DSC08272.JPG",
+          "order": 10,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08272.JPG"
+        },
+        {
+          "filename": "DSC08278.JPG",
+          "path": "/uploads/photos/urban/DSC08278.JPG",
+          "order": 11,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08278.JPG"
+        },
+        {
+          "filename": "DSC08316.JPG",
+          "path": "/uploads/photos/urban/DSC08316.JPG",
+          "order": 12,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08316.JPG"
+        },
+        {
+          "filename": "DSC08322.JPG",
+          "path": "/uploads/photos/urban/DSC08322.JPG",
+          "order": 13,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08322.JPG"
+        },
+        {
+          "filename": "DSC08349.JPG",
+          "path": "/uploads/photos/urban/DSC08349.JPG",
+          "order": 14,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08349.JPG"
+        },
+        {
+          "filename": "DSC08350.JPG",
+          "path": "/uploads/photos/urban/DSC08350.JPG",
+          "order": 15,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08350.JPG"
+        },
+        {
+          "filename": "DSC08352.JPG",
+          "path": "/uploads/photos/urban/DSC08352.JPG",
+          "order": 16,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08352.JPG"
+        },
+        {
+          "filename": "DSC08378.JPG",
+          "path": "/uploads/photos/urban/DSC08378.JPG",
+          "order": 17,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08378.JPG"
+        },
+        {
+          "filename": "DSC08408.JPG",
+          "path": "/uploads/photos/urban/DSC08408.JPG",
+          "order": 18,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08408.JPG"
+        },
+        {
+          "filename": "DSC08409.JPG",
+          "path": "/uploads/photos/urban/DSC08409.JPG",
+          "order": 19,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08409.JPG"
+        },
+        {
+          "filename": "DSC08410.JPG",
+          "path": "/uploads/photos/urban/DSC08410.JPG",
+          "order": 20,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC08410.JPG"
+        },
+        {
+          "filename": "DSC09089.JPG",
+          "path": "/uploads/photos/urban/DSC09089.JPG",
+          "order": 21,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC09089.JPG"
+        },
+        {
+          "filename": "DSC09242.JPG",
+          "path": "/uploads/photos/urban/DSC09242.JPG",
+          "order": 22,
+          "dominantColors": [],
+          "suggestedVibe": "urban",
+          "thumbPath": "/uploads/thumbs/urban/DSC09242.JPG"
+        }
+      ]
+    },
+    {
+      "id": "cinematic-figures",
+      "sourceFolder": "stormtrooper",
+      "name": "Cinematic Figures",
+      "description": "Character studies and editorial compositions with surreal presence.",
+      "vibe": "cinematic",
+      "dominantColors": [],
+      "images": [
+        {
+          "filename": "DSC08813.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08813.JPG",
+          "order": 1,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08813.JPG"
+        },
+        {
+          "filename": "DSC08897_copy_2.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08897_copy_2.JPG",
+          "order": 2,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08897_copy_2.JPG"
+        },
+        {
+          "filename": "DSC08900_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08900_copy.JPG",
+          "order": 3,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08900_copy.JPG"
+        },
+        {
+          "filename": "DSC08903_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08903_copy.JPG",
+          "order": 4,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08903_copy.JPG"
+        },
+        {
+          "filename": "DSC08907_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08907_copy.JPG",
+          "order": 5,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08907_copy.JPG"
+        },
+        {
+          "filename": "DSC08909_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08909_copy.JPG",
+          "order": 6,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08909_copy.JPG"
+        },
+        {
+          "filename": "DSC08912_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08912_copy.JPG",
+          "order": 7,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08912_copy.JPG"
+        },
+        {
+          "filename": "DSC08937_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08937_copy.JPG",
+          "order": 8,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08937_copy.JPG"
+        },
+        {
+          "filename": "DSC08939_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08939_copy.JPG",
+          "order": 9,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08939_copy.JPG"
+        },
+        {
+          "filename": "DSC08968_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08968_copy.JPG",
+          "order": 10,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08968_copy.JPG"
+        },
+        {
+          "filename": "DSC08973_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08973_copy.JPG",
+          "order": 11,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08973_copy.JPG"
+        },
+        {
+          "filename": "DSC08979_copy.JPG",
+          "path": "/uploads/photos/stormtrooper/DSC08979_copy.JPG",
+          "order": 12,
+          "dominantColors": [],
+          "suggestedVibe": "cinematic",
+          "thumbPath": "/uploads/thumbs/stormtrooper/DSC08979_copy.JPG"
+        }
+      ]
+    },
+    {
+      "id": "tonal-experiments",
+      "sourceFolder": "set-the-tone",
+      "name": "Tonal Experiments",
+      "description": "Mood-driven frames exploring light, color grading, and editorial tone.",
+      "vibe": "tonal",
+      "dominantColors": [],
+      "images": [
+        {
+          "filename": "DSC09249.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09249.JPG",
+          "order": 1,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09249.JPG"
+        },
+        {
+          "filename": "DSC09257.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09257.JPG",
+          "order": 2,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09257.JPG"
+        },
+        {
+          "filename": "DSC09259.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09259.JPG",
+          "order": 3,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09259.JPG"
+        },
+        {
+          "filename": "DSC09261.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09261.JPG",
+          "order": 4,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09261.JPG"
+        },
+        {
+          "filename": "DSC09268.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09268.JPG",
+          "order": 5,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09268.JPG"
+        },
+        {
+          "filename": "DSC09414.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09414.JPG",
+          "order": 6,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09414.JPG"
+        },
+        {
+          "filename": "DSC09424.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09424.JPG",
+          "order": 7,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09424.JPG"
+        },
+        {
+          "filename": "DSC09440.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09440.JPG",
+          "order": 8,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09440.JPG"
+        },
+        {
+          "filename": "DSC09474_copy.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09474_copy.JPG",
+          "order": 9,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09474_copy.JPG"
+        },
+        {
+          "filename": "DSC09475.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09475.JPG",
+          "order": 10,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09475.JPG"
+        },
+        {
+          "filename": "DSC09533_copy.jpeg",
+          "path": "/uploads/photos/set-the-tone/DSC09533_copy.jpeg",
+          "order": 11,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09533_copy.jpeg"
+        },
+        {
+          "filename": "DSC09557.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09557.JPG",
+          "order": 12,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09557.JPG"
+        },
+        {
+          "filename": "DSC09596.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09596.JPG",
+          "order": 13,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09596.JPG"
+        },
+        {
+          "filename": "DSC09610.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09610.JPG",
+          "order": 14,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09610.JPG"
+        },
+        {
+          "filename": "DSC09647.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09647.JPG",
+          "order": 15,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09647.JPG"
+        },
+        {
+          "filename": "DSC09700.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09700.JPG",
+          "order": 16,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09700.JPG"
+        },
+        {
+          "filename": "DSC09702.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09702.JPG",
+          "order": 17,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09702.JPG"
+        },
+        {
+          "filename": "DSC09734.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09734.JPG",
+          "order": 18,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09734.JPG"
+        },
+        {
+          "filename": "DSC09767.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09767.JPG",
+          "order": 19,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09767.JPG"
+        },
+        {
+          "filename": "DSC09775.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09775.JPG",
+          "order": 20,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09775.JPG"
+        },
+        {
+          "filename": "DSC09789.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09789.JPG",
+          "order": 21,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09789.JPG"
+        },
+        {
+          "filename": "DSC09869.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09869.JPG",
+          "order": 22,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09869.JPG"
+        },
+        {
+          "filename": "DSC09931.JPG",
+          "path": "/uploads/photos/set-the-tone/DSC09931.JPG",
+          "order": 23,
+          "dominantColors": [],
+          "suggestedVibe": "tonal",
+          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09931.JPG"
+        }
+      ]
+    }
+  ]
+}

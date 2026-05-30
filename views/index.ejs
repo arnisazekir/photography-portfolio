@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <span class="nav-logo">V P</span>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">Visual Portfolio</h1>
+      <p class="hero-subtitle">Photography Archive</p>
+      <span class="hero-line"></span>
+    </div>
+  </section>
+
+  <section class="segments">
+    <div class="segments-grid">
+      <% segments.forEach(function(seg, i) { %>
+        <a href="/gallery/<%= seg.id %>" class="segment-card" style="animation-delay: <%= i * 80 %>ms">
+          <div class="segment-card-inner">
+            <% if (seg.images && seg.images.length > 0) { %>
+              <% const sorted = seg.images.slice().sort((a,b) => a.order - b.order); %>
+              <div class="segment-preview" style="background-image: url('<%= sorted[0].path %>')"></div>
+            <% } else { %>
+              <div class="segment-preview segment-preview--empty"></div>
+            <% } %>
+            <div class="segment-info">
+              <span class="segment-vibe"><%= seg.vibe || '' %></span>
+              <h2 class="segment-name"><%= seg.name %></h2>
+              <p class="segment-desc"><%= seg.description %></p>
+              <span class="segment-count"><%= seg.images ? seg.images.length : 0 %> frames</span>
+            </div>
+          </div>
+        </a>
+      <% }); %>
+
+      <% if (!segments || segments.length === 0) { %>
+        <p class="empty-state">No segments yet. Run <code>npm run import</code> to load your photos.</p>
+      <% } %>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Selected Visual Work &mdash; All rights reserved</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

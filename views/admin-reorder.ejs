@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reorder — <%= segment.name %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/reorder.css">
+</head>
+<body class="admin-body">
+
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <span class="admin-logo">V P</span>
+      <span class="admin-label">Reorder</span>
+    </div>
+    <nav class="admin-nav">
+      <% segments.forEach(function(s) { %>
+        <a href="/admin/reorder/<%= s.id %>"
+           class="admin-nav-item<%= s.id === segment.id ? ' active' : '' %>">
+          <%= s.name %>
+        </a>
+      <% }); %>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="/admin" class="admin-nav-item">← Back to Admin</a>
+      <a href="/gallery/<%= segment.id %>" class="admin-nav-item" target="_blank">View Gallery ↗</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="reorder-header">
+      <div>
+        <h1 class="reorder-title">Reorder Photos</h1>
+        <p class="reorder-subtitle"><%= segment.name %> &mdash; <%= images.length %> photos</p>
+      </div>
+      <div class="reorder-status" id="saveStatus">Drag photos to reorder</div>
+    </div>
+
+    <div class="reorder-hint-bar">
+      <span class="reorder-hint-icon">⠿</span>
+      Drag and drop to change order — saves automatically
+    </div>
+
+    <div class="reorder-grid" id="reorderGrid" data-segment="<%= segment.id %>">
+      <% images.forEach(function(img, i) { %>
+        <div class="reorder-card" data-filename="<%= img.filename %>">
+          <div class="reorder-drag-handle" title="Drag to reorder">⠿</div>
+          <div class="reorder-num"><%= i + 1 %></div>
+          <img
+            src="<%= img.thumbPath || img.path %>"
+            alt=""
+            loading="lazy"
+            class="reorder-img"
+          >
+          <div class="reorder-card-actions">
+            <button class="reorder-btn reorder-btn--up"   onclick="moveCard(this, -1)" title="Move up">↑</button>
+            <button class="reorder-btn reorder-btn--down" onclick="moveCard(this,  1)" title="Move down">↓</button>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script>
+    const segmentId = '<%= segment.id %>';
+    const status    = document.getElementById('saveStatus');
+    const grid      = document.getElementById('reorderGrid');
+
+    function updateNumbers() {
+      grid.querySelectorAll('.reorder-card').forEach((card, i) => {
+        card.querySelector('.reorder-num').textContent = i + 1;
+      });
+    }
+
+    function toast(msg, err = false) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.borderColor = err ? 'var(--danger)' : 'var(--border)';
+      el.classList.add('visible');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('visible'), 2800);
+    }
+
+    async function saveOrder() {
+      const filenames = [...grid.querySelectorAll('.reorder-card')].map(c => c.dataset.filename);
+      status.textContent = 'Saving…';
+      try {
+        const r = await fetch(`/admin/api/segments/${segmentId}/order`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderedFilenames: filenames })
+        });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Failed');
+        status.textContent = 'Saved ✓';
+        toast('Order saved');
+        setTimeout(() => { status.textContent = 'Drag photos to reorder'; }, 2000);
+      } catch (e) {
+        status.textContent = 'Save failed';
+        toast(e.message, true);
+      }
+    }
+
+    function moveCard(btn, direction) {
+      const card = btn.closest('.reorder-card');
+      if (direction === -1 && card.previousElementSibling) {
+        grid.insertBefore(card, card.previousElementSibling);
+      } else if (direction === 1 && card.nextElementSibling) {
+        grid.insertBefore(card.nextElementSibling, card);
+      }
+      updateNumbers();
+      saveOrder();
+    }
+
+    Sortable.create(grid, {
+      animation: 200,
+      handle: '.reorder-drag-handle',
+      ghostClass: 'reorder-ghost',
+      chosenClass: 'reorder-chosen',
+      onEnd() { updateNumbers(); saveOrder(); }
+    });
+  </script>
+</body>
+</html>
