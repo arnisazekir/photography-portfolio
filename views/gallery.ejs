@@ -41,7 +41,7 @@
       <div onclick="openPhoto(this)" style="cursor:pointer;">
         <img
           src="<%= img.thumbPath || img.path %>"
-          data-full="<%= img.thumbPath || img.path %>"
+          data-full="<%= img.cloudinaryUrl || img.thumbPath || img.path %>"
           alt="<%= segment.name %> <%= i+1 %>"
           style="width:100%;height:auto;display:block;">
       </div>

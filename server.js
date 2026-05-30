@@ -1,12 +1,19 @@
 require('dotenv').config();
-const express  = require('express');
+const express     = require('express');
 const compression = require('compression');
-const session  = require('express-session');
-const flash    = require('connect-flash');
-const multer   = require('multer');
-const sharp    = require('sharp');
-const path     = require('path');
-const fs       = require('fs');
+const session     = require('express-session');
+const flash       = require('connect-flash');
+const multer      = require('multer');
+const sharp       = require('sharp');
+const path        = require('path');
+const fs          = require('fs');
+const cloudinary  = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -325,6 +332,21 @@ app.post('/admin/api/upload', requireAdmin, (req, res) => {
       dominantColors: analysis.dominantColors,
       suggestedVibe:  analysis.suggestedVibe
     };
+
+    // Upload to Cloudinary in background — non-blocking so admin upload stays fast
+    if (process.env.CLOUDINARY_CLOUD_NAME) {
+      cloudinary.uploader.upload(absPath, {
+        folder:    'outoforder/' + seg.sourceFolder,
+        public_id: path.parse(req.file.filename).name,
+        overwrite: false
+      }).then(result => {
+        imgRecord.cloudinaryUrl = result.secure_url;
+        const d = loadData();
+        const s = d.segments.find(x => x.id === seg.id);
+        const i = s && s.images.find(x => x.filename === imgRecord.filename);
+        if (i) { i.cloudinaryUrl = result.secure_url; saveData(d); }
+      }).catch(e => console.error('Cloudinary upload failed:', e.message));
+    }
 
     seg.images.push(imgRecord);
     saveData(data);
