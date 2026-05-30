@@ -311,15 +311,13 @@ button { cursor: pointer; font-family: inherit; }
 }
 .gallery-item:focus { outline: 1px solid rgba(255,255,255,0.2); outline-offset: 1px; }
 
-/* Each image shown at its full natural aspect ratio — no height set, no overflow */
+/* Full photo at natural aspect ratio — never cropped, never stretched */
 .gallery-img {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.35s ease;
+  object-fit: unset;
 }
-.gallery-img.img-loaded { opacity: 1; }
 
 /* Hover: subtle overlay only */
 .gallery-item::after {
@@ -368,15 +366,18 @@ button { cursor: pointer; font-family: inherit; }
 }
 .lightbox-img.loaded { opacity: 1; }
 
-/* Spinner shown while full image loads */
+/* Spinner — explicitly centred in the fixed lightbox */
 .lightbox-spinner {
-  position: absolute;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   width: 28px; height: 28px;
   border: 1px solid rgba(255,255,255,0.12);
   border-top-color: rgba(255,255,255,0.6);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   pointer-events: none;
+  z-index: 2002;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 

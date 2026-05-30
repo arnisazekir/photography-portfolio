@@ -1,15 +1,4 @@
-// ─── Gallery image fade-in (src already set in HTML, just detect load) ───────
-(function () {
-  document.querySelectorAll('.gallery-img').forEach(img => {
-    const markLoaded = () => img.classList.add('img-loaded');
-    if (img.complete && img.naturalWidth > 0) {
-      markLoaded();
-    } else {
-      img.addEventListener('load',  markLoaded, { once: true });
-      img.addEventListener('error', markLoaded, { once: true }); // show broken rather than blank
-    }
-  });
-})();
+// Gallery images are visible immediately — no opacity tricks, no JS dependency
 
 // ─── Scroll-reveal for homepage segment cards ─────────────────────────────────
 (function () {

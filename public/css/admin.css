@@ -290,6 +290,31 @@
   margin-left: 12px;
 }
 
+/* ─── Inline segment name / description edit ────────────────────────────────── */
+
+.seg-inline-edit {
+  margin-bottom: 20px;
+}
+
+.seg-inline-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.seg-inline-row .form-group {
+  margin-bottom: 0;
+  min-width: 160px;
+}
+
+.seg-save-btn {
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: 0;
+  height: 40px;
+}
+
 /* ─── Segment blocks ────────────────────────────────────────────────────────── */
 
 .segment-block {

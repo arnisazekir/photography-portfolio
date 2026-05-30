@@ -99,6 +99,26 @@
             </div>
           </div>
 
+          <!-- Inline name & description edit -->
+          <div class="seg-inline-edit" id="edit-<%= seg.id %>">
+            <div class="seg-inline-row">
+              <div class="form-group" style="flex:1">
+                <label class="form-label">Category Name</label>
+                <input type="text" class="form-input" id="iname-<%= seg.id %>"
+                       value="<%= seg.name %>" placeholder="Category name">
+              </div>
+              <div class="form-group" style="flex:2">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-input" id="idesc-<%= seg.id %>"
+                       value="<%= (seg.description||'') %>" placeholder="Short description">
+              </div>
+              <button class="btn btn--primary btn--sm seg-save-btn"
+                      onclick="saveSegmentInfo('<%= seg.id %>', this)">
+                Save
+              </button>
+            </div>
+          </div>
+
           <!-- Cover preview -->
           <% if (seg.coverImage || (seg.images.length > 0)) { %>
             <%

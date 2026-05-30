@@ -1,3 +1,37 @@
+// ─── Inline segment name / description save ───────────────────────────────────
+
+async function saveSegmentInfo(segmentId, btn) {
+  const name = document.getElementById('iname-' + segmentId).value.trim();
+  const desc = document.getElementById('idesc-' + segmentId).value.trim();
+  if (!name) { toast('Name cannot be empty', true); return; }
+
+  const orig = btn.textContent;
+  btn.textContent = 'Saving…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/admin/api/segments/' + segmentId, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description: desc })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Save failed');
+
+    // Update visible heading so user sees the change immediately
+    const heading = document.getElementById('name-' + segmentId);
+    if (heading) heading.textContent = name;
+
+    btn.textContent = 'Saved ✓';
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2000);
+    toast('Category updated');
+  } catch (err) {
+    btn.textContent = orig;
+    btn.disabled = false;
+    toast(err.message, true);
+  }
+}
+
 // ─── Utility ─────────────────────────────────────────────────────────────────
 
 function toast(msg, isError = false) {
