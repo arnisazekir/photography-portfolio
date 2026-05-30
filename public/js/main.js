@@ -68,7 +68,6 @@
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
 (function lightbox() {
-  // Full-resolution paths are set by the gallery.ejs template
   const fullPaths = window.GALLERY_FULLPATHS || [];
   if (!fullPaths.length) return;
 
@@ -79,97 +78,80 @@
   const lbClose   = document.getElementById('lbClose');
   const lbPrev    = document.getElementById('lbPrev');
   const lbNext    = document.getElementById('lbNext');
+  if (!lb || !lbImage) return;
 
-  if (!lb) return;
+  let current = 0;
+  const cache = {};
 
-  let current  = 0;
-  let preloads = {}; // cache preloaded Image objects
-
-  // ── Preload neighbours ──────────────────────────────────────────────────
   function preload(idx) {
-    if (preloads[idx]) return;
-    const img = new Image();
-    img.src = fullPaths[idx];
-    preloads[idx] = img;
+    if (cache[idx] || idx < 0 || idx >= fullPaths.length) return;
+    const img = new Image(); img.src = fullPaths[idx]; cache[idx] = img;
   }
 
   function open(idx) {
     current = idx;
     lb.classList.add('is-open');
     document.body.style.overflow = 'hidden';
-    show(current);
-    preload((current + 1) % fullPaths.length);
-    preload((current - 1 + fullPaths.length) % fullPaths.length);
+    show(idx);
+    preload(idx + 1); preload(idx - 1);
   }
 
   function close() {
     lb.classList.remove('is-open');
     document.body.style.overflow = '';
+    lbImage.classList.remove('loaded');
     lbImage.src = '';
-    lbImage.classList.remove('loaded', 'broken');
-    if (lbSpinner) lbSpinner.style.display = 'none';
   }
 
   function show(idx) {
-    lbImage.classList.remove('loaded', 'broken');
-    lbImage.style.display = 'none';
+    lbImage.classList.remove('loaded');
+    lbImage.style.opacity = '0';
     if (lbSpinner) lbSpinner.style.display = 'block';
 
     const loader = new Image();
     loader.onload = () => {
       lbImage.src = fullPaths[idx];
-      lbImage.style.display = 'block';
       if (lbSpinner) lbSpinner.style.display = 'none';
-      // Reflow then fade in
-      lbImage.getBoundingClientRect();
-      lbImage.classList.add('loaded');
-
-      // Preload neighbours while user is looking at this image
-      preload((idx + 1) % fullPaths.length);
-      preload((idx - 1 + fullPaths.length) % fullPaths.length);
+      requestAnimationFrame(() => lbImage.classList.add('loaded'));
+      preload(idx + 1); preload(idx - 1);
     };
     loader.onerror = () => {
-      lbImage.src = fullPaths[idx];
-      lbImage.style.display = 'block';
-      lbImage.classList.add('broken');
       if (lbSpinner) lbSpinner.style.display = 'none';
+      lbImage.src = fullPaths[idx];
+      lbImage.classList.add('loaded');
     };
     loader.src = fullPaths[idx];
-
     lbCounter.textContent = `${idx + 1}  /  ${fullPaths.length}`;
   }
 
   function prev() { current = (current - 1 + fullPaths.length) % fullPaths.length; show(current); }
-  function next() { current = (current + 1) % fullPaths.length;                     show(current); }
+  function next() { current = (current + 1) % fullPaths.length; show(current); }
 
-  // ── Event wiring ────────────────────────────────────────────────────────
   document.querySelectorAll('.gallery-item').forEach(item => {
-    function activate() { open(Number(item.dataset.index)); }
-    item.addEventListener('click', activate);
-    item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') activate(); });
+    item.addEventListener('click', () => open(Number(item.dataset.index)));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') open(Number(item.dataset.index));
+    });
   });
 
   lbClose.addEventListener('click', close);
-  lbPrev.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
-  lbNext.addEventListener('click', (e) => { e.stopPropagation(); next(); });
-
-  // Click outside image to close
+  lbPrev.addEventListener('click', e => { e.stopPropagation(); prev(); });
+  lbNext.addEventListener('click', e => { e.stopPropagation(); next(); });
   lb.addEventListener('click', e => { if (e.target === lb) close(); });
 
   document.addEventListener('keydown', e => {
     if (!lb.classList.contains('is-open')) return;
     if (e.key === 'Escape')     close();
-    if (e.key === 'ArrowRight') next();
     if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
   });
 
-  // Touch swipe
   let tx = null;
   lb.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener('touchend', e => {
     if (tx === null) return;
     const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
     tx = null;
   }, { passive: true });
 })();

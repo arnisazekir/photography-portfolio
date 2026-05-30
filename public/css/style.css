@@ -1,5 +1,7 @@
 /* ─── Fonts ─────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap');
+/* Cormorant Garamond — high-contrast serif, closest free match to The Seasons  */
+/* Inter — clean minimal sans for body, subtitle, UI                            */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@200;300;400&display=swap');
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,6 +21,7 @@
 
   --danger:        #8c3b3b;
 
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font: 'Inter', system-ui, -apple-system, sans-serif;
 
   --radius: 2px;
@@ -94,15 +97,17 @@ button { cursor: pointer; font-family: inherit; }
 
 .nav { width: 100%; display: flex; align-items: center; justify-content: space-between; }
 
-/* ── OutOfOrder logo in nav (small) ── */
+/* ── Out Of Order logo in nav — Cormorant Garamond, spaced, all white ── */
 .nav-logo {
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 200;
-  letter-spacing: 0.12em;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
-.logo-out, .logo-order { color: var(--white); }
-.logo-of               { color: var(--gray-mid); }
+/* All three parts white in the nav logo */
+.logo-out, .logo-of, .logo-order { color: #ffffff; }
 
 .nav-back {
   font-size: 11px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase;
@@ -126,15 +131,18 @@ button { cursor: pointer; font-family: inherit; }
 .hero-title {
   font-family: var(--font);
   font-size: clamp(48px, 9vw, 120px);
-  font-weight: 200;          /* ultra-thin, sleek */
   letter-spacing: -0.01em;
   line-height: 1;
 }
+/* Out + Order → 400 regular weight */
 .title-out, .title-order {
-  color: var(--white);       /* off-white */
+  font-weight: 400;
+  color: var(--white);
 }
+/* of → stays thin */
 .title-of {
-  color: var(--gray-mid);    /* noticeably more gray */
+  font-weight: 200;
+  color: var(--gray-mid);
 }
 
 /* ── "personal visual portfolio" subtitle ── */
@@ -333,65 +341,83 @@ button { cursor: pointer; font-family: inherit; }
 }
 .gallery-item:hover::after { background: rgba(0,0,0,0.1); }
 
-/* ─── Lightbox ──────────────────────────────────────────────────────────────── */
+/* ─── Lightbox — always display:flex so centering is always computed ────────── */
 
 .lightbox {
-  position: fixed; inset: 0; z-index: 1000;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
   background: rgba(10, 10, 10, 0.98);
-  display: none; align-items: center; justify-content: center;
+  /* Always flex — centering never breaks */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Show/hide via visibility + opacity, not display */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
-.lightbox.is-open { display: flex; }
 
-.lightbox-inner {
-  position: relative; width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+.lightbox.is-open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }
 
+/* Image — object-fit: contain = NEVER cropped, always full photo visible */
 .lightbox-img {
-  max-width: 92vw; max-height: 92vh;
-  width: auto; height: auto;
-  object-fit: contain;
   display: block;
-  opacity: 0; transition: opacity 0.28s ease;
+  max-width: 90vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 .lightbox-img.loaded { opacity: 1; }
 
+/* Spinner shown while full image loads */
 .lightbox-spinner {
   position: absolute;
   width: 28px; height: 28px;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-top-color: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-top-color: rgba(255,255,255,0.6);
   border-radius: 50%;
-  animation: spin 0.75s linear infinite;
+  animation: spin 0.7s linear infinite;
+  pointer-events: none;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .lightbox-close {
-  position: fixed; top: 18px; right: 24px; z-index: 1001;
-  background: rgba(0,0,0,0.4); border: none; border-radius: 50%;
-  color: rgba(255,255,255,0.5);
-  width: 40px; height: 40px;
+  position: fixed; top: 20px; right: 24px; z-index: 2001;
+  background: rgba(0,0,0,0.45); border: none; border-radius: 50%;
+  color: rgba(255,255,255,0.6);
+  width: 42px; height: 42px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px; transition: color 0.18s, background 0.18s;
+  font-size: 16px; transition: color 0.18s, background 0.18s; cursor: pointer;
 }
-.lightbox-close:hover { color: #fff; background: rgba(0,0,0,0.7); }
+.lightbox-close:hover { color: #fff; background: rgba(0,0,0,0.75); }
 
 .lightbox-prev, .lightbox-next {
-  position: fixed; top: 50%; transform: translateY(-50%); z-index: 1001;
-  background: rgba(0,0,0,0.3); border: none;
-  color: rgba(255,255,255,0.4); font-size: 36px;
-  width: 52px; height: 52px;
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 2001;
+  background: rgba(0,0,0,0.3); border: none; cursor: pointer;
+  color: rgba(255,255,255,0.45); font-size: 38px;
+  width: 56px; height: 56px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: var(--radius); transition: color 0.18s, background 0.18s;
+  border-radius: var(--radius);
+  transition: color 0.18s, background 0.18s;
 }
 .lightbox-prev { left: 12px; }
 .lightbox-next { right: 12px; }
-.lightbox-prev:hover, .lightbox-next:hover { color: #fff; background: rgba(0,0,0,0.6); }
+.lightbox-prev:hover,
+.lightbox-next:hover { color: #fff; background: rgba(0,0,0,0.65); }
 
 .lightbox-counter {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-  font-size: 10px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.22); pointer-events: none;
+  position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); pointer-events: none;
 }
 
 /* ─── Footer ────────────────────────────────────────────────────────────────── */

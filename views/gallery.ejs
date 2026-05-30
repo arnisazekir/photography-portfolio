@@ -14,7 +14,7 @@
     <nav class="nav">
       <a href="/" class="nav-back">← Archive</a>
       <span class="nav-logo">
-        <span class="logo-out">Out</span><span class="logo-of">Of</span><span class="logo-order">Order</span>
+        Out Of Order
       </span>
     </nav>
   </header>
@@ -67,17 +67,13 @@
     <% }); %>
   </main>
 
-  <!-- Lightbox — uses full-resolution path, object-fit: contain -->
+  <!-- Lightbox — object-fit: contain, never cropped, always centered -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-spinner" id="lbSpinner"></div>
+    <img id="lbImage" class="lightbox-img" src="" alt="">
     <button class="lightbox-close" id="lbClose" aria-label="Close (Esc)">✕</button>
     <button class="lightbox-prev"  id="lbPrev"  aria-label="Previous (←)">‹</button>
     <button class="lightbox-next"  id="lbNext"  aria-label="Next (→)">›</button>
-
-    <div class="lightbox-inner" id="lbInner">
-      <div class="lightbox-spinner" id="lbSpinner"></div>
-      <img id="lbImage" class="lightbox-img" src="" alt="">
-    </div>
-
     <div class="lightbox-counter" id="lbCounter"></div>
   </div>
 
