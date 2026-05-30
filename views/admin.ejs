@@ -97,15 +97,35 @@
             </div>
           </div>
 
+          <!-- Cover preview -->
+          <% if (seg.coverImage || (seg.images.length > 0)) { %>
+            <%
+              const sortedImgs = seg.images.slice().sort((a,b) => a.order - b.order);
+              const coverSrc = seg.coverImage || (sortedImgs[0] && (sortedImgs[0].thumbPath || sortedImgs[0].path));
+            %>
+            <div class="segment-cover-row">
+              <div class="segment-cover-thumb" style="background-image:url('<%= coverSrc %>')"></div>
+              <div class="segment-cover-label">
+                <span class="form-label">Homepage Cover</span>
+                <span class="cover-hint">Click any image below and press "Set Cover" to change</span>
+              </div>
+            </div>
+          <% } %>
+
           <!-- Image grid -->
-          <div class="admin-img-grid" id="grid-<%= seg.id %>" data-segment="<%= seg.id %>">
+          <div class="admin-img-grid" id="grid-<%= seg.id %>" data-segment="<%= seg.id %>" data-cover="<%= seg.coverImage || '' %>">
             <% const sorted = seg.images.slice().sort((a,b) => a.order - b.order); %>
             <% sorted.forEach(function(img) { %>
-              <div class="admin-img-card" data-filename="<%= img.filename %>">
+              <div class="admin-img-card<%= seg.coverImage === (img.thumbPath||img.path) ? ' is-cover' : '' %>"
+                   data-filename="<%= img.filename %>"
+                   data-thumbpath="<%= img.thumbPath || img.path %>">
                 <img src="<%= img.thumbPath || img.path %>" alt="" loading="lazy" class="admin-img-thumb">
+                <% if (seg.coverImage === (img.thumbPath||img.path)) { %>
+                  <span class="cover-badge">Cover</span>
+                <% } %>
                 <div class="admin-img-overlay">
-                  <span class="admin-img-vibe"><%= img.suggestedVibe || '' %></span>
                   <div class="admin-img-btns">
+                    <button class="btn btn--ghost btn--xs" onclick="setCover('<%= seg.id %>', '<%= img.thumbPath || img.path %>', this)">Cover</button>
                     <button class="btn btn--ghost btn--xs" onclick="moveImage('<%= seg.id %>', '<%= img.filename %>')">Move</button>
                     <button class="btn btn--danger btn--xs" onclick="deleteImage('<%= seg.id %>', '<%= img.filename %>')">Delete</button>
                   </div>

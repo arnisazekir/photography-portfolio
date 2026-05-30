@@ -204,6 +204,17 @@ app.get('/admin', requireAdmin, (req, res) => {
   });
 });
 
+// Set cover image for a segment
+app.put('/admin/api/segments/:segmentId/cover', requireAdmin, (req, res) => {
+  const { thumbPath } = req.body;
+  const data = loadData();
+  const seg  = data.segments.find(s => s.id === req.params.segmentId);
+  if (!seg) return res.status(404).json({ error: 'Segment not found' });
+  seg.coverImage = thumbPath || null;
+  saveData(data);
+  res.json({ success: true });
+});
+
 // Dedicated reorder view for a single segment (the "other panel")
 app.get('/admin/reorder/:segmentId', requireAdmin, (req, res) => {
   const data    = loadData();

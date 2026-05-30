@@ -399,6 +399,65 @@
   padding: 4px 0;
 }
 
+/* ─── Cover image UI ────────────────────────────────────────────────────────── */
+
+.segment-cover-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+}
+
+.segment-cover-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius);
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg-elevated);
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.segment-cover-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cover-hint {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.05em;
+}
+
+/* Highlighted card when it's the current cover */
+.admin-img-card.is-cover {
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* "Cover" badge on the cover image */
+.cover-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(0,0,0,0.6);
+  padding: 2px 7px;
+  border-radius: 2px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
 /* ─── Modals ────────────────────────────────────────────────────────────────── */
 
 .modal {

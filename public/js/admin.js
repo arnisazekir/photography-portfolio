@@ -149,6 +149,43 @@ async function deleteImage(segmentId, filename) {
   }
 }
 
+// ─── Set cover image ──────────────────────────────────────────────────────────
+
+async function setCover(segmentId, thumbPath, btn) {
+  try {
+    await apiFetch(`/admin/api/segments/${segmentId}/cover`, {
+      method: 'PUT',
+      body: JSON.stringify({ thumbPath })
+    });
+
+    // Update cover preview row
+    const grid = document.getElementById(`grid-${segmentId}`);
+    if (grid) {
+      // Remove old cover badge + highlight
+      grid.querySelectorAll('.is-cover').forEach(c => c.classList.remove('is-cover'));
+      grid.querySelectorAll('.cover-badge').forEach(b => b.remove());
+      // Mark new cover
+      const card = btn.closest('.admin-img-card');
+      if (card) {
+        card.classList.add('is-cover');
+        const badge = document.createElement('span');
+        badge.className = 'cover-badge';
+        badge.textContent = 'Cover';
+        card.appendChild(badge);
+      }
+      // Update preview row background
+      const seg = grid.closest('.segment-block');
+      if (seg) {
+        const preview = seg.querySelector('.segment-cover-thumb');
+        if (preview) preview.style.backgroundImage = `url(${thumbPath})`;
+      }
+    }
+    toast('Cover image updated');
+  } catch (err) {
+    toast(err.message, true);
+  }
+}
+
 // ─── Move image ───────────────────────────────────────────────────────────────
 
 function moveImage(segmentId, filename) {

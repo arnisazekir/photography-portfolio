@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= segment.name %> — Visual Portfolio</title>
+  <title><%= segment.name %> — OutOfOrder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
@@ -13,7 +13,9 @@
   <header class="site-header">
     <nav class="nav">
       <a href="/" class="nav-back">← Archive</a>
-      <span class="nav-logo">V P</span>
+      <span class="nav-logo">
+        <span class="logo-out">Out</span><span class="logo-of">Of</span><span class="logo-order">Order</span>
+      </span>
     </nav>
   </header>
 
@@ -87,6 +89,7 @@
     // Use thumbPath for lightbox — 900px high-quality progressive JPEG, works on any host
     window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.thumbPath || i.path)) %>;
   </script>
+  <script src="/js/transitions.js"></script>
   <script src="/js/main.js"></script>
 </body>
 </html>

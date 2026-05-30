@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visual Portfolio</title>
+  <title>OutOfOrder — Personal Visual Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
@@ -12,14 +12,18 @@
 
   <header class="site-header">
     <nav class="nav">
-      <span class="nav-logo">V P</span>
+      <span class="nav-logo">
+        <span class="logo-out">Out</span><span class="logo-of">Of</span><span class="logo-order">Order</span>
+      </span>
     </nav>
   </header>
 
   <section class="hero">
     <div class="hero-inner">
-      <h1 class="hero-title">Visual Portfolio</h1>
-      <p class="hero-subtitle">Photography Archive</p>
+      <h1 class="hero-title">
+        <span class="title-out">Out</span><span class="title-of">Of</span><span class="title-order">Order</span>
+      </h1>
+      <p class="hero-subtitle">personal visual portfolio</p>
       <span class="hero-line"></span>
     </div>
   </section>
@@ -27,34 +31,37 @@
   <section class="segments">
     <div class="segments-grid">
       <% segments.forEach(function(seg, i) { %>
-        <a href="/gallery/<%= seg.id %>" class="segment-card" style="animation-delay: <%= i * 80 %>ms">
+        <%
+          // Use set cover image, fall back to first thumbnail
+          const sorted = seg.images.slice().sort((a,b) => a.order - b.order);
+          const coverSrc = seg.coverImage ||
+            (sorted.length > 0 ? (sorted[0].thumbPath || sorted[0].path) : '');
+        %>
+        <a href="/gallery/<%= seg.id %>" class="segment-card" style="animation-delay:<%= i * 80 %>ms">
           <div class="segment-card-inner">
-            <% if (seg.images && seg.images.length > 0) { %>
-              <% const sorted = seg.images.slice().sort((a,b) => a.order - b.order); %>
-              <div class="segment-preview" style="background-image: url('<%= sorted[0].path %>')"></div>
-            <% } else { %>
-              <div class="segment-preview segment-preview--empty"></div>
-            <% } %>
+            <div class="segment-preview<%= coverSrc ? '' : ' segment-preview--empty' %>"
+                 <%= coverSrc ? 'style="background-image:url(\'' + coverSrc + '\')"' : '' %>>
+            </div>
             <div class="segment-info">
-              <span class="segment-vibe"><%= seg.vibe || '' %></span>
+              <span class="segment-vibe"><%= seg.vibe %></span>
               <h2 class="segment-name"><%= seg.name %></h2>
               <p class="segment-desc"><%= seg.description %></p>
-              <span class="segment-count"><%= seg.images ? seg.images.length : 0 %> frames</span>
+              <span class="segment-count"><%= seg.images.length %> frames</span>
             </div>
           </div>
         </a>
       <% }); %>
 
       <% if (!segments || segments.length === 0) { %>
-        <p class="empty-state">No segments yet. Run <code>npm run import</code> to load your photos.</p>
+        <p class="empty-state">No segments yet.</p>
       <% } %>
     </div>
   </section>
 
   <footer class="site-footer">
-    <p>Selected Visual Work &mdash; All rights reserved</p>
+    <p>OutOfOrder &mdash; Personal Visual Portfolio</p>
   </footer>
 
-  <script src="/js/main.js"></script>
+  <script src="/js/transitions.js"></script>
 </body>
 </html>
