@@ -14,8 +14,8 @@ const ROOT      = path.join(__dirname, '..');
 const DATA_FILE = path.join(ROOT, 'data', 'portfolio.json');
 const PUB       = path.join(ROOT, 'public');
 
-const THUMB_MAX_W = 900;   // px — enough for 3-col masonry on retina
-const THUMB_Q    = 82;     // JPEG quality for thumbnails
+const THUMB_MAX_W = 1800;  // px — sharp in lightbox on retina screens
+const THUMB_Q    = 85;     // JPEG quality for thumbnails
 
 async function generateThumb(srcAbs, thumbAbs) {
   await sharp(srcAbs)
