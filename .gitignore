@@ -2,9 +2,8 @@ node_modules/
 .env
 .DS_Store
 
-# Full-res originals — too large for git; re-import on the server
+# Full-res originals are too large for git (1.4 GB) — kept locally only
 public/uploads/photos/
 
-# Thumbnails can be committed (small) or re-generated with: npm run thumbs
-# Comment out the next line if you want to commit thumbnails
+# Thumbnails ARE committed — they power the deployed site (3.7 MB total)
 # public/uploads/thumbs/

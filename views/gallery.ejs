@@ -84,8 +84,8 @@
   </footer>
 
   <script>
-    // Full-resolution paths for lightbox (never the thumbnail)
-    window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.path)) %>;
+    // Use thumbPath for lightbox — 900px high-quality progressive JPEG, works on any host
+    window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.thumbPath || i.path)) %>;
   </script>
   <script src="/js/main.js"></script>
 </body>
