@@ -4,14 +4,14 @@
       "id": "monochrome-studies",
       "sourceFolder": "bnw",
       "name": "Monochrome Studies",
-      "description": "Black and white images focused on contrast, form, and shadow.",
+      "description": "Black and white images focused on contrast, form, and shadow <h1>EDIT TEST 123</h1>",
       "vibe": "monochrome",
       "dominantColors": [],
       "images": [
         {
           "filename": "DSC09220_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09220_copy.JPG",
-          "order": 2,
+          "order": 4,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09220_copy.JPG"
@@ -27,7 +27,7 @@
         {
           "filename": "DSC09277_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09277_copy.JPG",
-          "order": 4,
+          "order": 6,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09277_copy.JPG"
@@ -43,7 +43,7 @@
         {
           "filename": "DSC09382_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09382_copy.JPG",
-          "order": 5,
+          "order": 7,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09382_copy.JPG"
@@ -51,7 +51,7 @@
         {
           "filename": "DSC09383_copy_2.JPG",
           "path": "/uploads/photos/bnw/DSC09383_copy_2.JPG",
-          "order": 6,
+          "order": 5,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09383_copy_2.JPG"
@@ -59,7 +59,7 @@
         {
           "filename": "DSC09392_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09392_copy.JPG",
-          "order": 7,
+          "order": 8,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09392_copy.JPG"
@@ -67,7 +67,7 @@
         {
           "filename": "DSC09394_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09394_copy.JPG",
-          "order": 8,
+          "order": 2,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09394_copy.JPG"
@@ -91,7 +91,7 @@
         {
           "filename": "DSC09525_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09525_copy.JPG",
-          "order": 11,
+          "order": 12,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09525_copy.JPG"
@@ -99,18 +99,10 @@
         {
           "filename": "DSC09731_copy.JPG",
           "path": "/uploads/photos/bnw/DSC09731_copy.JPG",
-          "order": 12,
-          "dominantColors": [],
-          "suggestedVibe": "monochrome",
-          "thumbPath": "/uploads/thumbs/bnw/DSC09731_copy.JPG"
-        },
-        {
-          "filename": "DSC09735.JPG",
-          "path": "/uploads/photos/bnw/DSC09735.JPG",
           "order": 13,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
-          "thumbPath": "/uploads/thumbs/bnw/DSC09735.JPG"
+          "thumbPath": "/uploads/thumbs/bnw/DSC09731_copy.JPG"
         },
         {
           "filename": "DSC09783.JPG",
@@ -139,7 +131,7 @@
         {
           "filename": "DSC09883.JPG",
           "path": "/uploads/photos/bnw/DSC09883.JPG",
-          "order": 17,
+          "order": 20,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09883.JPG"
@@ -147,7 +139,7 @@
         {
           "filename": "DSC09886.JPG",
           "path": "/uploads/photos/bnw/DSC09886.JPG",
-          "order": 18,
+          "order": 17,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09886.JPG"
@@ -155,7 +147,7 @@
         {
           "filename": "DSC09894.JPG",
           "path": "/uploads/photos/bnw/DSC09894.JPG",
-          "order": 19,
+          "order": 11,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09894.JPG"
@@ -163,7 +155,7 @@
         {
           "filename": "DSC09944.JPG",
           "path": "/uploads/photos/bnw/DSC09944.JPG",
-          "order": 20,
+          "order": 18,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09944.JPG"
@@ -171,7 +163,7 @@
         {
           "filename": "DSC09960.JPG",
           "path": "/uploads/photos/bnw/DSC09960.JPG",
-          "order": 21,
+          "order": 19,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09960.JPG"
@@ -179,7 +171,7 @@
         {
           "filename": "DSC09962.JPG",
           "path": "/uploads/photos/bnw/DSC09962.JPG",
-          "order": 22,
+          "order": 21,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09962.JPG"
@@ -187,7 +179,7 @@
         {
           "filename": "DSC09973.JPG",
           "path": "/uploads/photos/bnw/DSC09973.JPG",
-          "order": 23,
+          "order": 22,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09973.JPG"
@@ -195,7 +187,7 @@
         {
           "filename": "DSC09974.JPG",
           "path": "/uploads/photos/bnw/DSC09974.JPG",
-          "order": 24,
+          "order": 23,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09974.JPG"
@@ -203,12 +195,13 @@
         {
           "filename": "DSC09975.JPG",
           "path": "/uploads/photos/bnw/DSC09975.JPG",
-          "order": 25,
+          "order": 24,
           "dominantColors": [],
           "suggestedVibe": "monochrome",
           "thumbPath": "/uploads/thumbs/bnw/DSC09975.JPG"
         }
-      ]
+      ],
+      "coverImage": "/uploads/thumbs/bnw/DSC09400_copy.JPG"
     },
     {
       "id": "nocturnal-nature",
@@ -221,7 +214,7 @@
         {
           "filename": "DSC08462.JPG",
           "path": "/uploads/photos/dark-forest/DSC08462.JPG",
-          "order": 1,
+          "order": 3,
           "dominantColors": [],
           "suggestedVibe": "atmospheric",
           "thumbPath": "/uploads/thumbs/dark-forest/DSC08462.JPG"
@@ -237,7 +230,7 @@
         {
           "filename": "DSC08464.JPG",
           "path": "/uploads/photos/dark-forest/DSC08464.JPG",
-          "order": 3,
+          "order": 4,
           "dominantColors": [],
           "suggestedVibe": "atmospheric",
           "thumbPath": "/uploads/thumbs/dark-forest/DSC08464.JPG"
@@ -245,7 +238,7 @@
         {
           "filename": "DSC08509.JPG",
           "path": "/uploads/photos/dark-forest/DSC08509.JPG",
-          "order": 4,
+          "order": 1,
           "dominantColors": [],
           "suggestedVibe": "atmospheric",
           "thumbPath": "/uploads/thumbs/dark-forest/DSC08509.JPG"
@@ -266,7 +259,8 @@
           "suggestedVibe": "atmospheric",
           "thumbPath": "/uploads/thumbs/dark-forest/DSC08525.JPG"
         }
-      ]
+      ],
+      "coverImage": "/uploads/thumbs/dark-forest/DSC08509.JPG"
     },
     {
       "id": "urban-fragments",
@@ -558,7 +552,8 @@
           "suggestedVibe": "cinematic",
           "thumbPath": "/uploads/thumbs/stormtrooper/DSC08979_copy.JPG"
         }
-      ]
+      ],
+      "coverImage": "/uploads/thumbs/stormtrooper/DSC08897_copy_2.JPG"
     },
     {
       "id": "tonal-experiments",

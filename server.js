@@ -166,6 +166,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/gallery/:segmentId', (req, res) => {
+  res.set('Cache-Control', 'no-store');
   const data    = loadData();
   const segment = data.segments.find(s => s.id === req.params.segmentId);
   if (!segment) return res.status(404).render('404', { message: 'Gallery not found' });
