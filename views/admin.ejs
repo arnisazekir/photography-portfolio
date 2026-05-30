@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel — Visual Portfolio</title>
+  <title>Admin — OutOfOrder</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/admin.css">
 </head>
@@ -12,8 +12,9 @@
   <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
   <aside class="admin-sidebar">
     <div class="admin-sidebar-header">
-      <span class="admin-logo">V P</span>
-      <span class="admin-label">Admin</span>
+      <span class="admin-logo">
+        <span class="logo-out">Out</span><span class="logo-of">Of</span><span class="logo-order">Order</span>
+      </span>
     </div>
 
     <nav class="admin-nav">
@@ -87,6 +88,7 @@
               <h3 class="segment-block-name" id="name-<%= seg.id %>"><%= seg.name %></h3>
             </div>
             <div class="segment-block-actions">
+              <a href="/admin/segment/<%= seg.id %>" class="btn btn--primary btn--sm">Edit Gallery</a>
               <a href="/admin/reorder/<%= seg.id %>" class="btn btn--ghost btn--sm">Reorder</a>
               <button class="btn btn--ghost btn--sm" onclick="editSegment('<%= seg.id %>', '<%= seg.name.replace(/'/g, '\\\'') %>', '<%= (seg.description||'').replace(/'/g, '\\\'') %>', '<%= seg.vibe %>')">
                 Edit

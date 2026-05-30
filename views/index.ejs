@@ -24,23 +24,24 @@
         <span class="title-out">Out</span><span class="title-of">Of</span><span class="title-order">Order</span>
       </h1>
       <p class="hero-subtitle">personal visual portfolio</p>
-      <span class="hero-line"></span>
+      <div class="hero-scroll-hint">
+        <span class="scroll-line"></span>
+      </div>
     </div>
   </section>
 
-  <section class="segments">
+  <section class="segments" id="segments">
     <div class="segments-grid">
-      <% segments.forEach(function(seg, i) { %>
+      <% segments.forEach(function(seg) { %>
         <%
-          // Use set cover image, fall back to first thumbnail
-          const sorted = seg.images.slice().sort((a,b) => a.order - b.order);
+          const sorted  = seg.images.slice().sort((a,b) => a.order - b.order);
           const coverSrc = seg.coverImage ||
             (sorted.length > 0 ? (sorted[0].thumbPath || sorted[0].path) : '');
         %>
-        <a href="/gallery/<%= seg.id %>" class="segment-card" style="animation-delay:<%= i * 80 %>ms">
+        <a href="/gallery/<%= seg.id %>" class="segment-card reveal-card">
           <div class="segment-card-inner">
-            <div class="segment-preview<%= coverSrc ? '' : ' segment-preview--empty' %>"
-                 <%= coverSrc ? 'style="background-image:url(\'' + coverSrc + '\')"' : '' %>>
+            <div class="segment-preview<% if (!coverSrc) { %> segment-preview--empty<% } %>"
+                 style="<% if (coverSrc) { %>background-image: url('<%= coverSrc %>')<% } %>">
             </div>
             <div class="segment-info">
               <span class="segment-vibe"><%= seg.vibe %></span>
@@ -63,5 +64,6 @@
   </footer>
 
   <script src="/js/transitions.js"></script>
+  <script src="/js/main.js"></script>
 </body>
 </html>

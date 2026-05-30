@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit — <%= segment.name %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/segment-edit.css">
+</head>
+<body class="admin-body">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <span class="admin-logo">
+        <span class="logo-out">Out</span><span class="logo-of">Of</span><span class="logo-order">Order</span>
+      </span>
+    </div>
+    <nav class="admin-nav">
+      <% segments.forEach(function(s) { %>
+        <a href="/admin/segment/<%= s.id %>"
+           class="admin-nav-item<%= s.id === segment.id ? ' active' : '' %>">
+          <%= s.name %>
+        </a>
+      <% }); %>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <a href="/admin" class="admin-nav-item">← All Segments</a>
+      <a href="/gallery/<%= segment.id %>" class="admin-nav-item" target="_blank">View Gallery ↗</a>
+      <form action="/admin/logout" method="POST">
+        <button type="submit" class="btn btn--ghost admin-logout">Log out</button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <div class="toast" id="toast"></div>
+
+    <!-- ── Segment info ── -->
+    <div class="seg-edit-header">
+      <div class="seg-edit-cover-wrap">
+        <%
+          const sortedImgs = images;
+          const coverSrc = segment.coverImage ||
+            (sortedImgs.length > 0 ? (sortedImgs[0].thumbPath || sortedImgs[0].path) : '');
+        %>
+        <div class="seg-edit-cover"
+             id="coverPreview"
+             style="<% if (coverSrc) { %>background-image: url('<%= coverSrc %>')<% } %>">
+          <% if (!coverSrc) { %><span class="cover-empty-label">No cover</span><% } %>
+        </div>
+        <p class="cover-tip">Hover a photo below and click <strong>Set Cover</strong></p>
+      </div>
+
+      <div class="seg-edit-info">
+        <form id="infoForm" class="seg-info-form">
+          <div class="form-group">
+            <label class="form-label">Segment Name</label>
+            <input type="text" class="form-input" id="segName" value="<%= segment.name %>" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-input form-textarea" id="segDesc"><%= segment.description %></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vibe / Mood</label>
+            <select class="form-select" id="segVibe">
+              <% ['neutral','monochrome','dark','atmospheric','urban','cinematic','warm','cool','earthy','tonal','minimal','moody'].forEach(function(v) { %>
+                <option value="<%= v %>"<%= segment.vibe === v ? ' selected' : '' %>><%= v %></option>
+              <% }); %>
+            </select>
+          </div>
+          <button type="submit" class="btn btn--primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── Upload ── -->
+    <div class="seg-section">
+      <h2 class="seg-section-title">Add Photos</h2>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="hidden" name="segmentId" value="<%= segment.id %>">
+        <div class="upload-drop-zone" id="dropZone">
+          <span class="drop-icon">+</span>
+          <span class="drop-label">Drop images here or click to choose</span>
+          <input type="file" id="fileInput" name="image" accept="image/jpeg,image/png,image/webp" hidden multiple>
+        </div>
+        <div class="upload-preview-wrap" id="uploadPreviewWrap" style="display:none">
+          <img id="uploadPreview" class="upload-preview-img" src="" alt="">
+          <div class="upload-analysis" id="uploadAnalysis"></div>
+        </div>
+        <div class="upload-actions">
+          <button type="submit" class="btn btn--primary" id="uploadBtn">Upload</button>
+          <span class="upload-status" id="uploadStatus"></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Photo grid ── -->
+    <div class="seg-section">
+      <div class="seg-section-header">
+        <h2 class="seg-section-title">Photos <span class="photo-count">(<%= images.length %>)</span></h2>
+        <span class="drag-hint">⠿ Drag to reorder</span>
+      </div>
+
+      <div class="seg-photo-grid" id="photoGrid" data-segment="<%= segment.id %>">
+        <% images.forEach(function(img) { %>
+          <div class="photo-card<%= (segment.coverImage && segment.coverImage === (img.thumbPath||img.path)) ? ' is-cover' : '' %>"
+               data-filename="<%= img.filename %>"
+               data-thumbpath="<%= img.thumbPath || img.path %>">
+
+            <div class="photo-drag-handle">⠿</div>
+
+            <% if (segment.coverImage && segment.coverImage === (img.thumbPath||img.path)) { %>
+              <span class="photo-cover-badge">Cover</span>
+            <% } %>
+
+            <img src="<%= img.thumbPath || img.path %>"
+                 alt="" loading="lazy" class="photo-thumb">
+
+            <div class="photo-actions">
+              <button class="photo-btn photo-btn--cover"
+                      onclick="setCover('<%= segment.id %>', '<%= img.thumbPath || img.path %>', this)">
+                Set Cover
+              </button>
+              <button class="photo-btn photo-btn--delete"
+                      onclick="deletePhoto('<%= segment.id %>', '<%= img.filename %>', this)">
+                Delete
+              </button>
+            </div>
+          </div>
+        <% }); %>
+
+        <% if (images.length === 0) { %>
+          <p class="empty-state">No photos yet — upload some above.</p>
+        <% } %>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Sortable for drag-reorder -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script>
+    const SEGMENT_ID = '<%= segment.id %>';
+
+    // ── Toast ──
+    function toast(msg, err = false) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.borderColor = err ? 'var(--danger)' : 'var(--border)';
+      el.classList.add('visible');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('visible'), 3000);
+    }
+
+    async function api(url, opts = {}) {
+      const r = await fetch(url, {
+        headers: { 'Content-Type': 'application/json', ...opts.headers },
+        ...opts
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'Request failed');
+      return j;
+    }
+
+    // ── Save segment info ──
+    document.getElementById('infoForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        await api(`/admin/api/segments/${SEGMENT_ID}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            name:        document.getElementById('segName').value,
+            description: document.getElementById('segDesc').value,
+            vibe:        document.getElementById('segVibe').value
+          })
+        });
+        toast('Saved');
+      } catch(err) { toast(err.message, true); }
+    });
+
+    // ── Set cover ──
+    async function setCover(segmentId, thumbPath, btn) {
+      try {
+        await api(`/admin/api/segments/${segmentId}/cover`, {
+          method: 'PUT',
+          body: JSON.stringify({ thumbPath })
+        });
+        // Update cover preview
+        const preview = document.getElementById('coverPreview');
+        if (preview) {
+          preview.style.backgroundImage = `url(${thumbPath})`;
+          preview.innerHTML = '';
+        }
+        // Update badges
+        document.querySelectorAll('.photo-card').forEach(c => {
+          c.classList.remove('is-cover');
+          const b = c.querySelector('.photo-cover-badge');
+          if (b) b.remove();
+        });
+        const card = btn.closest('.photo-card');
+        if (card) {
+          card.classList.add('is-cover');
+          const badge = document.createElement('span');
+          badge.className = 'photo-cover-badge';
+          badge.textContent = 'Cover';
+          card.prepend(badge);
+        }
+        toast('Cover updated');
+      } catch(err) { toast(err.message, true); }
+    }
+
+    // ── Delete photo ──
+    async function deletePhoto(segmentId, filename, btn) {
+      if (!confirm('Delete this photo permanently?')) return;
+      try {
+        await api(`/admin/api/segments/${segmentId}/images/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+        const card = btn.closest('.photo-card');
+        if (card) card.remove();
+        // Update count
+        const countEl = document.querySelector('.photo-count');
+        const grid = document.getElementById('photoGrid');
+        if (countEl && grid) countEl.textContent = `(${grid.querySelectorAll('.photo-card').length})`;
+        toast('Photo deleted');
+      } catch(err) { toast(err.message, true); }
+    }
+
+    // ── Drag-to-reorder ──
+    const grid = document.getElementById('photoGrid');
+    Sortable.create(grid, {
+      animation: 200,
+      handle: '.photo-drag-handle',
+      ghostClass: 'photo-ghost',
+      async onEnd() {
+        const filenames = [...grid.querySelectorAll('.photo-card')].map(c => c.dataset.filename);
+        try {
+          await api(`/admin/api/segments/${SEGMENT_ID}/order`, {
+            method: 'PUT',
+            body: JSON.stringify({ orderedFilenames: filenames })
+          });
+          toast('Order saved');
+        } catch(err) { toast(err.message, true); }
+      }
+    });
+
+    // ── Upload ──
+    const dropZone    = document.getElementById('dropZone');
+    const fileInput   = document.getElementById('fileInput');
+    const previewWrap = document.getElementById('uploadPreviewWrap');
+    const preview     = document.getElementById('uploadPreview');
+    const status      = document.getElementById('uploadStatus');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) showPreview(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) showPreview(fileInput.files[0]); });
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = e => { preview.src = e.target.result; previewWrap.style.display = 'flex'; };
+      reader.readAsDataURL(file);
+      const dt = new DataTransfer(); dt.items.add(file); fileInput.files = dt.files;
+    }
+
+    document.getElementById('uploadForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!fileInput.files.length) return toast('Choose an image first', true);
+      status.textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      fd.append('segmentId', SEGMENT_ID);
+      try {
+        const r = await fetch('/admin/api/upload', { method: 'POST', body: fd });
+        const j = await r.json();
+        if (!r.ok) throw new Error(j.error || 'Upload failed');
+        status.textContent = '';
+
+        // Add card to grid
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        card.dataset.filename = j.image.filename;
+        card.dataset.thumbpath = j.image.thumbPath || j.image.path;
+        card.innerHTML = `
+          <div class="photo-drag-handle">⠿</div>
+          <img src="${j.image.thumbPath || j.image.path}" alt="" class="photo-thumb">
+          <div class="photo-actions">
+            <button class="photo-btn photo-btn--cover" onclick="setCover('${SEGMENT_ID}','${j.image.thumbPath||j.image.path}',this)">Set Cover</button>
+            <button class="photo-btn photo-btn--delete" onclick="deletePhoto('${SEGMENT_ID}','${j.image.filename}',this)">Delete</button>
+          </div>`;
+        grid.appendChild(card);
+        const countEl = document.querySelector('.photo-count');
+        if (countEl) countEl.textContent = `(${grid.querySelectorAll('.photo-card').length})`;
+
+        previewWrap.style.display = 'none';
+        fileInput.value = '';
+        toast('Photo uploaded');
+      } catch(err) { status.textContent = ''; toast(err.message, true); }
+    });
+  </script>
+</body>
+</html>

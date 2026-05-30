@@ -204,6 +204,18 @@ app.get('/admin', requireAdmin, (req, res) => {
   });
 });
 
+// Per-segment editing page
+app.get('/admin/segment/:segmentId', requireAdmin, (req, res) => {
+  const data    = loadData();
+  const segment = data.segments.find(s => s.id === req.params.segmentId);
+  if (!segment) return res.redirect('/admin');
+  const sorted = [...segment.images].sort((a, b) => a.order - b.order);
+  res.render('admin-segment', {
+    segment, images: sorted, segments: data.segments,
+    flash: req.flash('success'), error: req.flash('error')
+  });
+});
+
 // Set cover image for a segment
 app.put('/admin/api/segments/:segmentId/cover', requireAdmin, (req, res) => {
   const { thumbPath } = req.body;

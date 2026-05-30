@@ -1,3 +1,21 @@
+// ─── Scroll-reveal for homepage segment cards ─────────────────────────────────
+(function () {
+  const cards = document.querySelectorAll('.reveal-card');
+  if (!cards.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (!entry.isIntersecting) return;
+      // Stagger each card by 80ms
+      const idx = Array.from(cards).indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('is-visible'), idx * 80);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.08 });
+
+  cards.forEach(c => io.observe(c));
+})();
+
 // ─── Lazy-load with IntersectionObserver + skeleton handling ──────────────────
 (function lazyLoad() {
   const items = document.querySelectorAll('.gallery-item');

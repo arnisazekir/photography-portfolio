@@ -15,7 +15,7 @@
   --text-dim:      #8a8680;
   --text-faint:    #484644;
   --white:         #ede9e3;       /* off-white — "Out" and "Order" */
-  --gray-mid:      rgba(237,233,227,0.38); /* "of" and small lettering */
+  --gray-mid:      #7a7a72;      /* "of" and small lettering — exact brand color */
 
   --danger:        #8c3b3b;
 
@@ -152,6 +152,24 @@ button { cursor: pointer; font-family: inherit; }
   background: rgba(237,233,227,0.15); margin-top: 2px;
 }
 
+/* ─── Hero scroll hint ──────────────────────────────────────────────────────── */
+
+.hero-scroll-hint {
+  display: flex; flex-direction: column; align-items: center;
+  margin-top: 12px;
+  animation: scrollHint 2.2s ease-in-out infinite;
+}
+
+.scroll-line {
+  display: block; width: 1px; height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--gray-mid));
+}
+
+@keyframes scrollHint {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50%       { opacity: 0.8; transform: translateY(8px); }
+}
+
 /* ─── Segments grid ─────────────────────────────────────────────────────────── */
 
 .segments { padding: 0 2px 100px; }
@@ -162,21 +180,17 @@ button { cursor: pointer; font-family: inherit; }
   gap: 2px; max-width: 1600px; margin: 0 auto;
 }
 
+/* Cards start invisible — JS scroll observer adds .is-visible */
 .segment-card {
   display: block; position: relative;
   aspect-ratio: 3 / 4; overflow: hidden;
-  opacity: 0; /* start hidden, JS or CSS animation reveals */
-  animation: cardIn 0.55s var(--ease) both;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
 }
-.segment-card:nth-child(1) { animation-delay: 0ms; }
-.segment-card:nth-child(2) { animation-delay: 70ms; }
-.segment-card:nth-child(3) { animation-delay: 140ms; }
-.segment-card:nth-child(4) { animation-delay: 210ms; }
-.segment-card:nth-child(5) { animation-delay: 280ms; }
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+.segment-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .segment-card-inner { position: relative; width: 100%; height: 100%; }

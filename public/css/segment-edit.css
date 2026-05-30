@@ -1,0 +1,211 @@
+/* ── Segment edit layout ──────────────────────────────────────────────────── */
+
+.seg-edit-header {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 56px;
+  align-items: flex-start;
+}
+
+/* Cover image preview */
+.seg-edit-cover-wrap { flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.seg-edit-cover {
+  width: 200px;
+  height: 260px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-empty-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cover-tip {
+  font-size: 11px;
+  color: var(--text-faint);
+  max-width: 180px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Segment info form */
+.seg-edit-info { flex: 1; }
+
+.seg-info-form { display: flex; flex-direction: column; gap: 0; }
+
+/* ── Sections ─────────────────────────────────────────────────────────────── */
+
+.seg-section {
+  margin-bottom: 56px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.seg-section:last-child { border-bottom: none; }
+
+.seg-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.seg-section-title {
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+.seg-section-header .seg-section-title { margin-bottom: 0; }
+
+.photo-count { color: var(--text-faint); font-size: 16px; }
+
+.drag-hint {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+/* ── Photo grid ───────────────────────────────────────────────────────────── */
+
+.seg-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 4px;
+}
+
+.photo-card {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-card);
+  cursor: default;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.photo-card.is-cover {
+  border-color: rgba(255,255,255,0.2);
+}
+
+.photo-ghost { opacity: 0.2; }
+
+.photo-drag-handle {
+  position: absolute;
+  top: 6px; left: 6px; z-index: 5;
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  background: rgba(0,0,0,0.5);
+  border-radius: 2px;
+  padding: 1px 5px;
+  cursor: grab;
+  user-select: none;
+  line-height: 1.4;
+  backdrop-filter: blur(4px);
+}
+.photo-drag-handle:active { cursor: grabbing; }
+
+.photo-cover-badge {
+  position: absolute;
+  top: 6px; right: 6px; z-index: 5;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(0,0,0,0.6);
+  border-radius: 2px;
+  padding: 2px 6px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.photo-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.88);
+  transition: filter 0.2s ease;
+}
+.photo-card:hover .photo-thumb { filter: brightness(0.55); }
+
+.photo-actions {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.photo-card:hover .photo-actions { opacity: 1; }
+
+.photo-btn {
+  padding: 6px 14px;
+  font-size: 10px;
+  font-family: var(--font);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.photo-btn--cover {
+  background: rgba(30,30,30,0.85);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--white);
+}
+.photo-btn--cover:hover { background: rgba(50,50,50,0.9); }
+
+.photo-btn--delete {
+  background: rgba(30,30,30,0.85);
+  border: 1px solid rgba(140,59,59,0.5);
+  color: #c47a7a;
+}
+.photo-btn--delete:hover { background: var(--danger); color: var(--white); }
+
+/* ── Upload area (reused from admin) ──────────────────────────────────────── */
+
+.upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.upload-status { font-size: 12px; color: var(--text-dim); }
+
+/* ── Active sidebar nav item ──────────────────────────────────────────────── */
+
+.admin-nav-item.active {
+  color: var(--white);
+  background: rgba(255,255,255,0.05);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .seg-edit-header { flex-direction: column; }
+  .seg-edit-cover  { width: 100%; height: 200px; }
+  .seg-photo-grid  { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .photo-thumb     { height: 130px; }
+}
