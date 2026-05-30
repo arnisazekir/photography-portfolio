@@ -89,7 +89,7 @@ function previewFile(file) {
   reader.onload = e => {
     uploadPreview.src = e.target.result;
     previewWrap.style.display = 'flex';
-    uploadAnalysis.innerHTML = '<span style="color:var(--text-faint)">Analysing…</span>';
+    uploadAnalysis.innerHTML = '<span style="color:var(--text-faint)">Ready — select a segment and click Upload</span>';
   };
   reader.readAsDataURL(file);
 
@@ -109,8 +109,8 @@ uploadForm.addEventListener('submit', async e => {
   uploadStatus.textContent = 'Uploading…';
 
   const fd = new FormData();
+  fd.append('segmentId', segmentId);  // must come before the file
   fd.append('image', fileInput.files[0]);
-  fd.append('segmentId', segmentId);
 
   try {
     const res = await fetch('/admin/api/upload', { method: 'POST', body: fd });

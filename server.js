@@ -46,24 +46,12 @@ async function processUpload(srcAbs, folder, filename) {
   const thumbAbs = path.join(thumbDir, filename);
   const thumbRel = `/uploads/thumbs/${folder}/${filename}`;
 
-  // Generate thumbnail
+  // Generate thumbnail only — Cloudinary handles full-res
   await sharp(srcAbs)
     .rotate()
     .resize(THUMB_MAX_W, null, { withoutEnlargement: true })
-    .jpeg({ quality: 82, progressive: true, mozjpeg: true })
+    .jpeg({ quality: 82, progressive: true })
     .toFile(thumbAbs);
-
-  // Re-save original capped at FULL_MAX_W (preserves aspect ratio, reduces file size)
-  const meta = await sharp(srcAbs).metadata();
-  if (meta.width && meta.width > FULL_MAX_W) {
-    const tmp = srcAbs + '.resizing';
-    await sharp(srcAbs)
-      .rotate()
-      .resize(FULL_MAX_W, null, { withoutEnlargement: true })
-      .jpeg({ quality: 90, progressive: true })
-      .toFile(tmp);
-    fs.renameSync(tmp, srcAbs);
-  }
 
   return thumbRel;
 }
@@ -78,30 +66,36 @@ function deleteImageFiles(img) {
 // ─── Color / vibe analysis ────────────────────────────────────────────────────
 
 async function analyzeImage(filePath) {
-  try {
-    const Vibrant = require('node-vibrant');
-    const palette = await Vibrant.from(filePath).getPalette();
-    const colors  = [];
-    for (const key of ['Vibrant', 'DarkVibrant', 'LightVibrant', 'Muted', 'DarkMuted']) {
-      if (palette[key]) colors.push(palette[key].getHex());
-    }
-    const dominant = palette.Vibrant || palette.Muted || palette.DarkMuted;
-    let vibe = 'neutral';
-    if (dominant) {
-      const [r, g, b] = dominant.getRgb();
-      const lum = (r * 299 + g * 587 + b * 114) / 1000;
-      const sat = Math.max(r, g, b) - Math.min(r, g, b);
-      if (sat < 30)       vibe = lum < 80 ? 'dark' : lum < 160 ? 'monochrome' : 'minimal';
-      else if (lum < 60)  vibe = 'dark';
-      else if (r > g && r > b) vibe = lum < 140 ? 'cinematic' : 'warm';
-      else if (b > r && b > g) vibe = 'atmospheric';
-      else if (g > r && g > b) vibe = 'earthy';
-      else                vibe = 'urban';
-    }
-    return { dominantColors: colors.slice(0, 3), suggestedVibe: vibe };
-  } catch {
-    return { dominantColors: [], suggestedVibe: 'neutral' };
-  }
+  // Wrap in a 4-second timeout so large files never hang the upload
+  return Promise.race([
+    (async () => {
+      try {
+        const Vibrant = require('node-vibrant');
+        const palette = await Vibrant.from(filePath).getPalette();
+        const colors  = [];
+        for (const key of ['Vibrant', 'DarkVibrant', 'LightVibrant', 'Muted', 'DarkMuted']) {
+          if (palette[key]) colors.push(palette[key].getHex());
+        }
+        const dominant = palette.Vibrant || palette.Muted || palette.DarkMuted;
+        let vibe = 'neutral';
+        if (dominant) {
+          const [r, g, b] = dominant.getRgb();
+          const lum = (r * 299 + g * 587 + b * 114) / 1000;
+          const sat = Math.max(r, g, b) - Math.min(r, g, b);
+          if (sat < 30)            vibe = lum < 80 ? 'dark' : lum < 160 ? 'monochrome' : 'minimal';
+          else if (lum < 60)       vibe = 'dark';
+          else if (r > g && r > b) vibe = lum < 140 ? 'cinematic' : 'warm';
+          else if (b > r && b > g) vibe = 'atmospheric';
+          else if (g > r && g > b) vibe = 'earthy';
+          else                     vibe = 'urban';
+        }
+        return { dominantColors: colors.slice(0, 3), suggestedVibe: vibe };
+      } catch {
+        return { dominantColors: [], suggestedVibe: 'neutral' };
+      }
+    })(),
+    new Promise(resolve => setTimeout(() => resolve({ dominantColors: [], suggestedVibe: 'neutral' }), 4000))
+  ]);
 }
 
 // ─── Multer — uploads land in a temp dir first so we can process them ─────────
@@ -111,10 +105,14 @@ const ALLOWED = /^(jpeg|jpg|png|webp)$/i;
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
+      // segmentId may not be parsed yet if file field came first in FormData
+      // Fall back to a temp uploads dir and move the file in the route handler
+      const segmentId = req.body.segmentId;
       const data = loadData();
-      const seg  = data.segments.find(s => s.id === req.body.segmentId);
-      if (!seg) return cb(new Error('Segment not found'));
-      const dir = path.join(PUB, 'uploads', 'photos', seg.sourceFolder);
+      const seg  = segmentId && data.segments.find(s => s.id === segmentId);
+      const dir  = seg
+        ? path.join(PUB, 'uploads', 'photos', seg.sourceFolder)
+        : path.join(PUB, 'uploads', 'tmp');
       fs.mkdirSync(dir, { recursive: true });
       cb(null, dir);
     },
@@ -312,7 +310,13 @@ app.post('/admin/api/upload', requireAdmin, (req, res) => {
     const seg  = data.segments.find(s => s.id === req.body.segmentId);
     if (!seg) return res.status(404).json({ error: 'Segment not found' });
 
-    const absPath = path.join(PUB, 'uploads', 'photos', seg.sourceFolder, req.file.filename);
+    // If multer put the file in tmp (segmentId wasn't ready), move it now
+    const destDir = path.join(PUB, 'uploads', 'photos', seg.sourceFolder);
+    fs.mkdirSync(destDir, { recursive: true });
+    const finalPath = path.join(destDir, req.file.filename);
+    if (req.file.path !== finalPath) fs.renameSync(req.file.path, finalPath);
+
+    const absPath = finalPath;
     const relPath = `/uploads/photos/${seg.sourceFolder}/${req.file.filename}`;
 
     let thumbPath = null;

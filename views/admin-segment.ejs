@@ -276,8 +276,8 @@
       if (!fileInput.files.length) return toast('Choose an image first', true);
       status.textContent = 'Uploading…';
       const fd = new FormData();
-      fd.append('image', fileInput.files[0]);
       fd.append('segmentId', SEGMENT_ID);
+      fd.append('image', fileInput.files[0]);
       try {
         const r = await fetch('/admin/api/upload', { method: 'POST', body: fd });
         const j = await r.json();
