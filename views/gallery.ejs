@@ -7,6 +7,74 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/style.css?v=6">
+
+  <!-- Inline: gallery + lightbox styles bypass all caching -->
+  <style>
+    /* Gallery — images at full natural size, no cropping */
+    .gallery-grid {
+      columns: 3;
+      column-gap: 4px;
+      padding: 4px 4px 80px;
+    }
+    @media (max-width: 900px)  { .gallery-grid { columns: 2; } }
+    @media (max-width: 500px)  { .gallery-grid { columns: 1; } }
+
+    .gallery-item {
+      display: block;
+      break-inside: avoid;
+      margin-bottom: 4px;
+      cursor: pointer;
+      overflow: visible;
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      overflow: visible;
+    }
+
+    /* Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      background: rgba(10,10,10,0.97);
+      align-items: center;
+      justify-content: center;
+    }
+    #lightbox.is-open {
+      display: flex !important;
+    }
+    #lbImage {
+      display: block;
+      max-width: 90vw;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    #lbClose {
+      position: fixed; top: 20px; right: 24px; z-index: 10000;
+      background: rgba(0,0,0,0.5); border: none; border-radius: 50%;
+      color: #fff; width: 42px; height: 42px; font-size: 18px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    #lbPrev, #lbNext {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 10000;
+      background: rgba(0,0,0,0.4); border: none; color: #fff;
+      font-size: 36px; width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    #lbPrev { left: 12px; }
+    #lbNext { right: 12px; }
+    #lbCounter {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 0.1em;
+    }
+  </style>
 </head>
 <body>
 
@@ -34,7 +102,6 @@
     <% }); %>
   </div>
 
-  <!-- Full images, never cropped — src set directly, browser lazy-loads natively -->
   <main class="gallery-grid" id="gallery">
     <% if (images.length === 0) { %>
       <p class="empty-state">No images in this gallery yet.</p>
@@ -45,8 +112,6 @@
         <img
           src="<%= img.thumbPath || img.path %>"
           alt="<%= segment.name %> — <%= i + 1 %>"
-          loading="lazy"
-          class="gallery-img"
           draggable="false"
         >
       </div>
@@ -54,22 +119,70 @@
   </main>
 
   <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
-    <img id="lbImage" class="lightbox-img" src="" alt="">
-    <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
-    <button class="lightbox-prev"  id="lbPrev"  aria-label="Previous">‹</button>
-    <button class="lightbox-next"  id="lbNext"  aria-label="Next">›</button>
-    <div class="lightbox-counter" id="lbCounter"></div>
+  <div id="lightbox" role="dialog" aria-modal="true">
+    <img id="lbImage" src="" alt="">
+    <button id="lbClose">✕</button>
+    <button id="lbPrev">‹</button>
+    <button id="lbNext">›</button>
+    <div id="lbCounter"></div>
   </div>
 
   <footer class="site-footer">
     <p>OutOfOrder &mdash; Personal Visual Portfolio</p>
   </footer>
 
+  <!-- Inline lightbox JS — bypasses JS file caching -->
   <script>
-    window.GALLERY_FULLPATHS = <%- JSON.stringify(images.map(i => i.thumbPath || i.path)) %>;
+    (function () {
+      var paths = <%- JSON.stringify(images.map(function(i){ return i.thumbPath || i.path; })) %>;
+      var lb     = document.getElementById('lightbox');
+      var lbImg  = document.getElementById('lbImage');
+      var lbCnt  = document.getElementById('lbCounter');
+      var cur    = 0;
+
+      function show(idx) {
+        cur = idx;
+        var src = paths[idx];
+        console.log('Opening lightbox image:', src);
+        lbImg.src = src;
+        lbCnt.textContent = (idx + 1) + ' / ' + paths.length;
+      }
+
+      function open(idx) {
+        show(idx);
+        lb.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function close() {
+        lb.classList.remove('is-open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      function prev() { show((cur - 1 + paths.length) % paths.length); }
+      function next() { show((cur + 1) % paths.length); }
+
+      document.querySelectorAll('.gallery-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+          open(parseInt(item.getAttribute('data-index'), 10));
+        });
+      });
+
+      document.getElementById('lbClose').addEventListener('click', close);
+      document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); prev(); });
+      document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); next(); });
+      lb.addEventListener('click', function(e){ if (e.target === lb) close(); });
+
+      document.addEventListener('keydown', function(e) {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape')     close();
+        if (e.key === 'ArrowLeft')  prev();
+        if (e.key === 'ArrowRight') next();
+      });
+    })();
   </script>
+
   <script src="/js/transitions.js"></script>
-  <script src="/js/main.js"></script>
 </body>
 </html>
