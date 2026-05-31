@@ -1,7 +1,7 @@
 /* ─── Fonts ─────────────────────────────────────────────────────────────────── */
 /* Cormorant Garamond — high-contrast serif, closest free match to The Seasons  */
 /* Inter — clean minimal sans for body, subtitle, UI                            */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Cutive+Mono&family=Inter:wght@200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Libre+Bodoni:ital,wght@0,400;0,700;1,400&family=Inter:wght@200;300;400&display=swap');
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +22,7 @@
   --danger:        #8c3b3b;
 
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-mono: 'Cutive Mono', monospace;
+  --font-display: 'Libre Bodoni', Georgia, serif;
   --font: 'Inter', system-ui, -apple-system, sans-serif;
 
   --radius: 2px;
@@ -127,7 +127,7 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ── OutOfOrder main title ── */
 .hero-title {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: clamp(48px, 9vw, 120px);
   letter-spacing: -0.01em;
   line-height: 1;
@@ -137,7 +137,7 @@ button { cursor: pointer; font-family: inherit; }
   font-weight: 400;
   color: var(--white);
 }
-/* of → color only differentiation (Cutive Mono is single-weight) */
+/* of → stays lighter via color */
 .title-of {
   font-weight: 400;
   color: var(--gray-mid);
