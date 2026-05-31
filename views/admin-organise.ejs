@@ -153,6 +153,7 @@
     async function saveMove(filename, fromSegment, toSegment) {
       const r = await fetch(`/admin/api/segments/${fromSegment}/images/${encodeURIComponent(filename)}/move`, {
         method: 'PUT',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ targetSegmentId: toSegment })
       });
@@ -165,6 +166,7 @@
       const filenames = [...list.querySelectorAll('.org-photo')].map(c => c.dataset.filename);
       await fetch(`/admin/api/segments/${segmentId}/order`, {
         method: 'PUT',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderedFilenames: filenames })
       });

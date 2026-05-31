@@ -170,6 +170,7 @@
 
     async function api(url, opts = {}) {
       const r = await fetch(url, {
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', ...opts.headers },
         ...opts
       });

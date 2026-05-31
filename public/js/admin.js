@@ -48,6 +48,7 @@ function closeModal(id) { document.getElementById(id).classList.remove('is-open'
 
 async function apiFetch(url, opts = {}) {
   const res = await fetch(url, {
+    credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json', ...opts.headers },
     ...opts
   });
