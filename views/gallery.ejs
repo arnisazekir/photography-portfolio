@@ -7,6 +7,55 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* ── Lightbox ─────────────────────────────────────────────── */
+    #lb {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+    }
+    #lb.open { display: flex; align-items: center; justify-content: center; }
+
+    #lb-img {
+      display: block;
+      max-width: 90vw;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Close */
+    #lb-close {
+      position: fixed; top: 20px; right: 24px;
+      font-size: 28px; color: rgba(255,255,255,0.7);
+      background: none; border: none; cursor: pointer;
+      line-height: 1; z-index: 10000;
+    }
+    #lb-close:hover { color: #fff; }
+
+    /* Arrows */
+    #lb-prev, #lb-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      font-size: 48px; color: rgba(255,255,255,0.5);
+      background: none; border: none; cursor: pointer;
+      z-index: 10000; padding: 0 16px; line-height: 1;
+      transition: color 0.2s;
+    }
+    #lb-prev:hover, #lb-next:hover { color: #fff; }
+    #lb-prev { left: 8px; }
+    #lb-next { right: 8px; }
+
+    /* Counter */
+    #lb-counter {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.35); font-size: 12px;
+      letter-spacing: 0.15em; pointer-events: none;
+      font-family: var(--font);
+    }
+  </style>
 </head>
 <body>
 
@@ -34,11 +83,9 @@
     <% }); %>
   </div>
 
-  <!-- Grid: 3 equal columns, align-items:start so each cell is only as tall as its image -->
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px 8px 80px;align-items:start;">
-
     <% images.forEach(function(img, i) { %>
-      <div onclick="openPhoto(this)" style="cursor:pointer;">
+      <div onclick="LB.open(<%= i %>)" style="cursor:pointer;">
         <img
           src="<%= img.thumbPath || img.path %>"
           data-full="<%= img.cloudinaryUrl || img.thumbPath || img.path %>"
@@ -46,9 +93,8 @@
           style="width:100%;height:auto;display:block;">
       </div>
     <% }); %>
-
     <% if (images.length === 0) { %>
-      <p style="color:#888;padding:40px;text-align:center;grid-column:1/-1;">No images in this gallery yet.</p>
+      <p style="color:#888;padding:40px;text-align:center;grid-column:1/-1;">No images yet.</p>
     <% } %>
   </div>
 
@@ -56,37 +102,86 @@
     <p>OutOfOrder &mdash; Personal Visual Portfolio</p>
   </footer>
 
+  <!-- Lightbox -->
+  <div id="lb" onclick="if(event.target===this)LB.close()">
+    <img id="lb-img" src="" alt="">
+    <button id="lb-close" onclick="LB.close()">✕</button>
+    <button id="lb-prev"  onclick="LB.prev()">‹</button>
+    <button id="lb-next"  onclick="LB.next()">›</button>
+    <div id="lb-counter"></div>
+  </div>
+
   <script src="/js/transitions.js"></script>
   <script>
-    function openPhoto(container){
-      var img = container.querySelector('img');
-      document.getElementById('lb-img').src = img.getAttribute('data-full') || img.src;
-      document.getElementById('lb').style.display = 'block';
-      document.body.style.overflow = 'hidden';
-    }
-    function closePhoto(){
-      document.getElementById('lb').style.display = 'none';
-      document.getElementById('lb-img').src = '';
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') closePhoto();
-    });
-  </script>
+    var LB = (function () {
+      var items   = Array.from(document.querySelectorAll('[data-full]'));
+      var total   = items.length;
+      var cur     = 0;
+      var lb      = document.getElementById('lb');
+      var lbImg   = document.getElementById('lb-img');
+      var lbCount = document.getElementById('lb-counter');
 
-  <!-- Lightbox: last child of body, position:fixed covers full viewport -->
-  <div id="lb"
-       onclick="if(event.target===this)closePhoto()"
-       style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,0.95);">
-    <!-- Image centred with transform — works in every browser -->
-    <img id="lb-img" src="" alt=""
-         style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-                max-width:90vw;max-height:90vh;width:auto;height:auto;object-fit:contain;display:block;">
-    <!-- Close button -->
-    <span onclick="closePhoto()"
-          style="position:absolute;top:18px;right:26px;font-size:34px;line-height:1;
-                 color:#fff;cursor:pointer;z-index:1;user-select:none;">✕</span>
-  </div>
+      function show(i) {
+        cur = i;
+        // items[i] IS the <img> element — data-full is on the img itself
+        var el       = items[i];
+        var thumbSrc = el.src;
+        var fullSrc  = el.getAttribute('data-full');
+
+        // Show thumbnail immediately — already cached from the grid
+        lbImg.src = thumbSrc;
+        lbCount.textContent = (i + 1) + '  /  ' + total;
+
+        // Load full-res in background, swap silently when ready
+        if (fullSrc && fullSrc !== thumbSrc) {
+          var hi = new Image();
+          hi.onload = function () {
+            if (cur === i) lbImg.src = fullSrc;
+          };
+          hi.src = fullSrc;
+        }
+
+        // Preload neighbours for fast arrow navigation
+        if (i + 1 < total) new Image().src = items[i+1].getAttribute('data-full');
+        if (i - 1 >= 0)    new Image().src = items[i-1].getAttribute('data-full');
+      }
+
+      return {
+        open: function (i) {
+          lb.className = 'open';
+          document.body.style.overflow = 'hidden';
+          show(i);
+        },
+        close: function () {
+          lb.className = '';
+          document.body.style.overflow = '';
+          lbImg.classList.remove('visible');
+          lbImg.src = '';
+        },
+        prev: function () { show((cur - 1 + total) % total); },
+        next: function () { show((cur + 1) % total); }
+      };
+    })();
+
+    document.addEventListener('keydown', function (e) {
+      if (!document.getElementById('lb').classList.contains('open')) return;
+      if (e.key === 'Escape')     LB.close();
+      if (e.key === 'ArrowLeft')  LB.prev();
+      if (e.key === 'ArrowRight') LB.next();
+    });
+
+    // Touch swipe
+    var tx = null;
+    document.getElementById('lb').addEventListener('touchstart', function (e) {
+      tx = e.touches[0].clientX;
+    }, { passive: true });
+    document.getElementById('lb').addEventListener('touchend', function (e) {
+      if (tx === null) return;
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 50) { dx < 0 ? LB.next() : LB.prev(); }
+      tx = null;
+    }, { passive: true });
+  </script>
 
 </body>
 </html>
