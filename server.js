@@ -210,6 +210,16 @@ app.get('/admin', requireAdmin, (req, res) => {
   });
 });
 
+// Organise — drag photos between all categories
+app.get('/admin/organise', requireAdmin, (req, res) => {
+  const data = loadData();
+  const segments = data.segments.map(s => ({
+    ...s,
+    images: [...s.images].sort((a, b) => a.order - b.order)
+  }));
+  res.render('admin-organise', { segments });
+});
+
 // Per-segment editing page
 app.get('/admin/segment/:segmentId', requireAdmin, (req, res) => {
   const data    = loadData();

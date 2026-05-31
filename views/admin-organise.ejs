@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organise — OutOfOrder Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    body { display: block; }
+
+    .org-header {
+      position: sticky; top: 0; z-index: 100;
+      background: #141414;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 24px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .org-title { font-family: var(--font-serif); font-size: 20px; color: var(--white); font-weight: 400; }
+    .org-hint  { font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; }
+    .org-back  { font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-left: auto; }
+    .org-back:hover { color: var(--white); }
+
+    /* Status toast */
+    .org-status {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      color: var(--text); font-size: 13px; padding: 10px 18px;
+      border-radius: var(--radius); opacity: 0; pointer-events: none;
+      transition: opacity 0.25s; z-index: 500;
+    }
+    .org-status.show { opacity: 1; }
+
+    /* Board: horizontal scroll of columns */
+    .org-board {
+      display: flex;
+      gap: 8px;
+      padding: 20px 20px 60px;
+      overflow-x: auto;
+      min-height: calc(100vh - 60px);
+      align-items: flex-start;
+    }
+
+    .org-col {
+      flex: 0 0 220px;
+      background: #1e1e1e;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      overflow: visible;
+    }
+
+    .org-col-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 12px; font-weight: 400;
+      color: var(--white); letter-spacing: 0.06em;
+      position: sticky; top: 57px;
+      background: #1e1e1e;
+      border-radius: 4px 4px 0 0;
+      z-index: 10;
+    }
+    .org-col-count { color: var(--text-faint); font-size: 11px; margin-left: 6px; }
+
+    /* Photo list inside each column */
+    .org-list {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 80px;
+    }
+
+    /* Individual photo card */
+    .org-photo {
+      position: relative;
+      cursor: grab;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--bg-card);
+      user-select: none;
+    }
+    .org-photo:active { cursor: grabbing; }
+    .org-photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+    }
+
+    /* Sortable states */
+    .org-photo.sortable-ghost   { opacity: 0.2; }
+    .org-photo.sortable-chosen  { box-shadow: 0 8px 24px rgba(0,0,0,0.6); transform: scale(1.02); }
+    .org-photo.sortable-drag    { opacity: 0; }
+
+    /* Drop zone highlight when something is dragged over */
+    .org-list.drag-over { background: rgba(255,255,255,0.04); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <div class="org-header">
+    <span class="org-title">Organise</span>
+    <span class="org-hint">Drag photos between categories — saves automatically</span>
+    <a href="/admin" class="org-back">← Back to Admin</a>
+  </div>
+
+  <div class="org-board" id="board">
+    <% segments.forEach(function(seg) { %>
+      <div class="org-col">
+        <div class="org-col-header">
+          <%= seg.name %>
+          <span class="org-col-count" id="count-<%= seg.id %>">(<%= seg.images.length %>)</span>
+        </div>
+        <div class="org-list"
+             id="list-<%= seg.id %>"
+             data-segment="<%= seg.id %>">
+          <% seg.images.forEach(function(img) { %>
+            <div class="org-photo"
+                 data-filename="<%= img.filename %>"
+                 data-segment="<%= seg.id %>">
+              <img src="<%= img.thumbPath || img.path %>"
+                   alt="<%= img.filename %>"
+                   loading="lazy">
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+  <div class="org-status" id="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script>
+    const lists = document.querySelectorAll('.org-list');
+    let saveTimer = null;
+
+    function showStatus(msg, err) {
+      const el = document.getElementById('status');
+      el.textContent = msg;
+      el.style.borderColor = err ? '#8c3b3b' : 'var(--border)';
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    function updateCount(segmentId) {
+      const list  = document.getElementById('list-' + segmentId);
+      const count = document.getElementById('count-' + segmentId);
+      if (list && count) count.textContent = '(' + list.querySelectorAll('.org-photo').length + ')';
+    }
+
+    async function saveMove(filename, fromSegment, toSegment) {
+      const r = await fetch(`/admin/api/segments/${fromSegment}/images/${encodeURIComponent(filename)}/move`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetSegmentId: toSegment })
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Move failed');
+    }
+
+    async function saveOrder(segmentId) {
+      const list = document.getElementById('list-' + segmentId);
+      const filenames = [...list.querySelectorAll('.org-photo')].map(c => c.dataset.filename);
+      await fetch(`/admin/api/segments/${segmentId}/order`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderedFilenames: filenames })
+      });
+    }
+
+    // Create a Sortable on every column list
+    lists.forEach(list => {
+      Sortable.create(list, {
+        group:           'photos',       // same group = drag between lists
+        animation:       180,
+        ghostClass:      'sortable-ghost',
+        chosenClass:     'sortable-chosen',
+        dragClass:       'sortable-drag',
+        scroll:          true,           // auto-scroll the page while dragging
+        scrollSensitivity: 100,          // px from edge to trigger scroll
+        scrollSpeed:     12,             // scroll speed
+        forceFallback:   false,
+
+        // Photo dropped into a different column
+        onAdd: async function(evt) {
+          const photo      = evt.item;
+          const filename   = photo.dataset.filename;
+          const fromSeg    = photo.dataset.segment;
+          const toSeg      = list.dataset.segment;
+
+          photo.dataset.segment = toSeg; // update reference
+          updateCount(fromSeg);
+          updateCount(toSeg);
+          showStatus('Moving…');
+
+          try {
+            await saveMove(filename, fromSeg, toSeg);
+            showStatus('Moved ✓');
+          } catch(e) {
+            showStatus(e.message, true);
+          }
+        },
+
+        // Photo reordered within the same column
+        onUpdate: async function() {
+          const segId = list.dataset.segment;
+          try {
+            await saveOrder(segId);
+            showStatus('Order saved ✓');
+          } catch(e) {
+            showStatus(e.message, true);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

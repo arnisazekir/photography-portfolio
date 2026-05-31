@@ -127,6 +127,16 @@
                       onclick="setCover('<%= segment.id %>', '<%= img.thumbPath || img.path %>', this)">
                 Set Cover
               </button>
+              <div class="photo-move-wrap">
+                <button class="photo-btn photo-btn--move">Move to →</button>
+                <div class="photo-move-dropdown">
+                  <% segments.filter(s => s.id !== segment.id).forEach(function(s) { %>
+                    <button onclick="movePhoto('<%= segment.id %>', '<%= img.filename %>', '<%= s.id %>', '<%= s.name %>', this)">
+                      <%= s.name %>
+                    </button>
+                  <% }); %>
+                </div>
+              </div>
               <button class="photo-btn photo-btn--delete"
                       onclick="deletePhoto('<%= segment.id %>', '<%= img.filename %>', this)">
                 Delete
@@ -215,6 +225,23 @@
       } catch(err) { toast(err.message, true); }
     }
 
+    // ── Move photo to another segment ──
+    async function movePhoto(segmentId, filename, targetId, targetName, btn) {
+      if (!confirm('Move this photo to ' + targetName + '?')) return;
+      try {
+        await api(`/admin/api/segments/${segmentId}/images/${encodeURIComponent(filename)}/move`, {
+          method: 'PUT',
+          body: JSON.stringify({ targetSegmentId: targetId })
+        });
+        const card = btn.closest('.photo-card');
+        if (card) card.remove();
+        const countEl = document.querySelector('.photo-count');
+        const grid = document.getElementById('photoGrid');
+        if (countEl && grid) countEl.textContent = '(' + grid.querySelectorAll('.photo-card').length + ')';
+        toast('Moved to ' + targetName);
+      } catch(err) { toast(err.message, true); }
+    }
+
     // ── Delete photo ──
     async function deletePhoto(segmentId, filename, btn) {
       if (!confirm('Delete this photo permanently?')) return;
@@ -236,6 +263,7 @@
       animation: 200,
       handle: '.photo-drag-handle',
       ghostClass: 'photo-ghost',
+      revertOnSpill: true,   // always snap back if dropped outside the grid
       async onEnd() {
         const filenames = [...grid.querySelectorAll('.photo-card')].map(c => c.dataset.filename);
         try {
