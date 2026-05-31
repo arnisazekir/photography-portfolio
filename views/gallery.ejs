@@ -18,6 +18,18 @@
     }
     #lb.open { display: flex; align-items: center; justify-content: center; }
 
+    /* Grid thumbnails — bright by default, brighter on hover */
+    .grid-item img {
+      width: 100%; height: auto; display: block;
+      filter: brightness(1.08);
+      transition: filter 0.2s ease, transform 0.2s ease;
+    }
+    .grid-item:hover img {
+      filter: brightness(1.25);
+      transform: scale(1.02);
+    }
+    .grid-item { cursor: pointer; overflow: hidden; }
+
     #lb-img {
       display: block;
       max-width: 90vw;
@@ -85,12 +97,11 @@
 
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px 8px 80px;align-items:start;">
     <% images.forEach(function(img, i) { %>
-      <div onclick="LB.open(<%= i %>)" style="cursor:pointer;">
+      <div class="grid-item" onclick="LB.open(<%= i %>)">
         <img
           src="<%= img.thumbPath || img.path %>"
           data-full="<%= img.cloudinaryUrl || img.thumbPath || img.path %>"
-          alt="<%= segment.name %> <%= i+1 %>"
-          style="width:100%;height:auto;display:block;">
+          alt="<%= segment.name %> <%= i+1 %>">
       </div>
     <% }); %>
     <% if (images.length === 0) { %>
