@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OutOfOrder Jost Outline Lab</title>
+<style>
+  :root { --bg: #181818; --ink: #FAF9F6; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    display: grid;
+    grid-template-rows: minmax(54vh, 1fr) auto;
+  }
+  .stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    overflow: hidden;
+  }
+  #logoSvg {
+    width: min(92vw, 980px);
+    height: auto;
+    overflow: visible;
+    color: var(--ink);
+  }
+  .glyph-path { fill: currentColor; }
+  .panel {
+    border-top: 1px solid rgba(250,249,246,0.12);
+    background: rgba(0,0,0,0.22);
+    padding: 18px 24px 22px;
+    max-height: 46vh;
+    overflow: auto;
+    display: grid;
+    gap: 14px;
+  }
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    border: 1px solid rgba(250,249,246,0.1);
+    border-radius: 6px;
+    padding: 12px;
+    display: grid;
+    gap: 9px;
+    background: rgba(255,255,255,0.025);
+  }
+  .card h2 {
+    margin: 0 0 2px;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(250,249,246,0.92);
+  }
+  label {
+    display: grid;
+    gap: 5px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(250,249,246,0.58);
+  }
+  input { width: 100%; accent-color: var(--ink); }
+  output {
+    color: rgba(250,249,246,0.92);
+    font-size: 12px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .readout {
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(250,249,246,0.1);
+    color: rgba(250,249,246,0.72);
+    font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    padding: 12px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <svg id="logoSvg" viewBox="0 -112 640 150" aria-label="OutOfOrder Jost outline lab">
+      <g id="logoParts"></g>
+    </svg>
+  </main>
+  <section class="panel">
+    <div class="controls" id="controls"></div>
+    <pre class="readout" id="readout"></pre>
+  </section>
+
+<script>
+const outlines = {"u":{"advance":50.4,"bbox":{"x1":7.2,"y1":-44.16,"x2":43.2,"y2":0.96},"commands":[{"type":"M","x":14.88,"y":-17.28},{"type":"L","x":14.88,"y":-17.28},{"type":"L","x":14.88,"y":-44.16},{"type":"L","x":7.2,"y":-44.16},{"type":"L","x":7.2,"y":-16.32},{"type":"Q","x":11.328,"y":-3.744,"x1":7.2,"y1":-8.448},{"type":"Q","x":22.368,"y":0.96,"x1":15.456,"y1":0.96},{"type":"L","x":22.368,"y":0.96},{"type":"Q","x":30.048,"y":-1.008,"x1":26.784,"y1":0.96},{"type":"Q","x":35.52,"y":-6.912,"x1":33.312,"y1":-2.976},{"type":"L","x":35.52,"y":-6.912},{"type":"L","x":35.52,"y":0},{"type":"L","x":43.2,"y":0},{"type":"L","x":43.2,"y":-44.16},{"type":"L","x":35.52,"y":-44.16},{"type":"L","x":35.52,"y":-17.28},{"type":"Q","x":34.128,"y":-11.52,"x1":35.52,"y1":-14.016},{"type":"Q","x":30.192,"y":-7.632,"x1":32.736,"y1":-9.024},{"type":"Q","x":24.288,"y":-6.24,"x1":27.648,"y1":-6.24},{"type":"L","x":24.288,"y":-6.24},{"type":"Q","x":17.28,"y":-9.12,"x1":19.68,"y1":-6.24},{"type":"Q","x":14.88,"y":-17.28,"x1":14.88,"y1":-12}]},"t":{"advance":23.04,"bbox":{"x1":0.48,"y1":-59.52,"x2":22.56,"y2":0},"commands":[{"type":"M","x":22.56,"y":-44.16},{"type":"L","x":0.48,"y":-44.16},{"type":"L","x":0.48,"y":-36.96},{"type":"L","x":22.56,"y":-36.96},{"type":"L","x":22.56,"y":-44.16},{"type":"M","x":15.36,"y":-59.52},{"type":"L","x":7.68,"y":-59.52},{"type":"L","x":7.68,"y":0},{"type":"L","x":15.36,"y":0},{"type":"L","x":15.36,"y":-59.52}]},"f":{"advance":27.456,"bbox":{"x1":3.84,"y1":-75.84,"x2":29.376,"y2":0},"commands":[{"type":"M","x":25.92,"y":-44.16},{"type":"L","x":3.84,"y":-44.16},{"type":"L","x":3.84,"y":-36.96},{"type":"L","x":25.92,"y":-36.96},{"type":"L","x":25.92,"y":-44.16},{"type":"M","x":25.152,"y":-65.664},{"type":"L","x":25.152,"y":-65.664},{"type":"L","x":29.376,"y":-72},{"type":"Q","x":27.504,"y":-73.824,"x1":28.704,"y1":-72.96},{"type":"Q","x":24.672,"y":-75.264,"x1":26.304,"y1":-74.688},{"type":"Q","x":20.928,"y":-75.84,"x1":23.04,"y1":-75.84},{"type":"L","x":20.928,"y":-75.84},{"type":"Q","x":14.064,"y":-74.16,"x1":16.896,"y1":-75.84},{"type":"Q","x":9.696,"y":-69.12,"x1":11.232,"y1":-72.48},{"type":"Q","x":8.16,"y":-60.48,"x1":8.16,"y1":-65.76},{"type":"L","x":8.16,"y":-60.48},{"type":"L","x":8.16,"y":0},{"type":"L","x":15.84,"y":0},{"type":"L","x":15.84,"y":-59.52},{"type":"Q","x":16.416,"y":-64.608,"x1":15.84,"y1":-62.688},{"type":"Q","x":18,"y":-67.344,"x1":16.992,"y1":-66.528},{"type":"Q","x":20.448,"y":-68.16,"x1":19.008,"y1":-68.16},{"type":"L","x":20.448,"y":-68.16},{"type":"Q","x":22.896,"y":-67.728,"x1":21.6,"y1":-68.16},{"type":"Q","x":25.152,"y":-65.664,"x1":24.192,"y1":-67.296}]},"r":{"advance":32.928,"bbox":{"x1":7.2,"y1":-45.12,"x2":32.448,"y2":0},"commands":[{"type":"M","x":14.88,"y":0},{"type":"L","x":14.88,"y":-44.16},{"type":"L","x":7.2,"y":-44.16},{"type":"L","x":7.2,"y":0},{"type":"L","x":14.88,"y":0},{"type":"M","x":28.224,"y":-35.712},{"type":"L","x":28.224,"y":-35.712},{"type":"L","x":32.448,"y":-42.048},{"type":"Q","x":28.656,"y":-44.496,"x1":30.72,"y1":-43.872},{"type":"Q","x":24.192,"y":-45.12,"x1":26.592,"y1":-45.12},{"type":"L","x":24.192,"y":-45.12},{"type":"Q","x":18.144,"y":-42.72,"x1":21.12,"y1":-45.12},{"type":"Q","x":13.296,"y":-36.24,"x1":15.168,"y1":-40.32},{"type":"Q","x":11.424,"y":-26.88,"x1":11.424,"y1":-32.16},{"type":"L","x":11.424,"y":-26.88},{"type":"L","x":14.88,"y":-26.88},{"type":"Q","x":15.504,"y":-32.544,"x1":14.88,"y1":-30.048},{"type":"Q","x":17.76,"y":-36.48,"x1":16.128,"y1":-35.04},{"type":"Q","x":22.272,"y":-37.92,"x1":19.392,"y1":-37.92},{"type":"L","x":22.272,"y":-37.92},{"type":"Q","x":25.44,"y":-37.392,"x1":24.192,"y1":-37.92},{"type":"Q","x":28.224,"y":-35.712,"x1":26.688,"y1":-36.864}]},"d":{"advance":54.72,"bbox":{"x1":3.36,"y1":-74.88,"x2":48,"y2":0.96},"commands":[{"type":"M","x":48,"y":-74.88},{"type":"L","x":40.32,"y":-74.88},{"type":"L","x":40.32,"y":0},{"type":"L","x":48,"y":0},{"type":"L","x":48,"y":-74.88},{"type":"M","x":3.36,"y":-22.08},{"type":"L","x":3.36,"y":-22.08},{"type":"Q","x":6.336,"y":-9.792,"x1":3.36,"y1":-14.976},{"type":"Q","x":14.304,"y":-1.824,"x1":9.312,"y1":-4.608},{"type":"Q","x":25.248,"y":0.96,"x1":19.296,"y1":0.96},{"type":"L","x":25.248,"y":0.96},{"type":"Q","x":34.944,"y":-1.824,"x1":30.816,"y1":0.96},{"type":"Q","x":41.424,"y":-9.792,"x1":39.072,"y1":-4.608},{"type":"Q","x":43.776,"y":-22.08,"x1":43.776,"y1":-14.976},{"type":"L","x":43.776,"y":-22.08},{"type":"Q","x":41.424,"y":-34.416,"x1":43.776,"y1":-29.28},{"type":"Q","x":34.944,"y":-42.336,"x1":39.072,"y1":-39.552},{"type":"Q","x":25.248,"y":-45.12,"x1":30.816,"y1":-45.12},{"type":"L","x":25.248,"y":-45.12},{"type":"Q","x":14.304,"y":-42.336,"x1":19.296,"y1":-45.12},{"type":"Q","x":6.336,"y":-34.416,"x1":9.312,"y1":-39.552},{"type":"Q","x":3.36,"y":-22.08,"x1":3.36,"y1":-29.28},{"type":"M","x":11.136,"y":-22.08},{"type":"L","x":11.136,"y":-22.08},{"type":"Q","x":13.2,"y":-30.72,"x1":11.136,"y1":-27.168},{"type":"Q","x":18.72,"y":-36.096,"x1":15.264,"y1":-34.272},{"type":"Q","x":26.208,"y":-37.92,"x1":22.176,"y1":-37.92},{"type":"L","x":26.208,"y":-37.92},{"type":"Q","x":32.832,"y":-36.096,"x1":29.568,"y1":-37.92},{"type":"Q","x":38.208,"y":-30.72,"x1":36.096,"y1":-34.272},{"type":"Q","x":40.32,"y":-22.08,"x1":40.32,"y1":-27.168},{"type":"L","x":40.32,"y":-22.08},{"type":"Q","x":38.208,"y":-13.44,"x1":40.32,"y1":-16.992},{"type":"Q","x":32.832,"y":-8.064,"x1":36.096,"y1":-9.888},{"type":"Q","x":26.208,"y":-6.24,"x1":29.568,"y1":-6.24},{"type":"L","x":26.208,"y":-6.24},{"type":"Q","x":18.72,"y":-8.064,"x1":22.176,"y1":-6.24},{"type":"Q","x":13.2,"y":-13.44,"x1":15.264,"y1":-9.888},{"type":"Q","x":11.136,"y":-22.08,"x1":11.136,"y1":-16.992}]},"e":{"advance":49.44,"bbox":{"x1":3.36,"y1":-45.12,"x2":46.08,"y2":0.96},"commands":[{"type":"M","x":24.288,"y":0.96},{"type":"L","x":24.288,"y":0.96},{"type":"Q","x":36.624,"y":-1.872,"x1":31.392,"y1":0.96},{"type":"Q","x":45.312,"y":-10.272,"x1":41.856,"y1":-4.704},{"type":"L","x":45.312,"y":-10.272},{"type":"L","x":39.072,"y":-14.208},{"type":"Q","x":33.216,"y":-8.208,"x1":36.672,"y1":-10.176},{"type":"Q","x":25.248,"y":-6.24,"x1":29.76,"y1":-6.24},{"type":"L","x":25.248,"y":-6.24},{"type":"Q","x":17.568,"y":-8.16,"x1":20.736,"y1":-6.24},{"type":"Q","x":12.768,"y":-13.728,"x1":14.4,"y1":-10.08},{"type":"Q","x":11.136,"y":-22.56,"x1":11.136,"y1":-17.376},{"type":"L","x":11.136,"y":-22.56},{"type":"Q","x":12.912,"y":-31.152,"x1":11.232,"y1":-27.648},{"type":"Q","x":17.712,"y":-36.528,"x1":14.592,"y1":-34.656},{"type":"Q","x":25.248,"y":-38.4,"x1":20.832,"y1":-38.4},{"type":"L","x":25.248,"y":-38.4},{"type":"Q","x":31.776,"y":-36.768,"x1":28.992,"y1":-38.4},{"type":"Q","x":36.144,"y":-32.256,"x1":34.56,"y1":-35.136},{"type":"Q","x":37.728,"y":-25.44,"x1":37.728,"y1":-29.376},{"type":"L","x":37.728,"y":-25.44},{"type":"Q","x":37.44,"y":-23.76,"x1":37.728,"y1":-24.768},{"type":"Q","x":36.864,"y":-22.272,"x1":37.152,"y1":-22.752},{"type":"L","x":36.864,"y":-22.272},{"type":"L","x":39.936,"y":-26.688},{"type":"L","x":8.256,"y":-26.688},{"type":"L","x":8.256,"y":-20.16},{"type":"L","x":45.984,"y":-20.16},{"type":"Q","x":46.032,"y":-21.072,"x1":45.984,"y1":-20.352},{"type":"Q","x":46.08,"y":-22.464,"x1":46.08,"y1":-21.792},{"type":"L","x":46.08,"y":-22.464},{"type":"Q","x":43.584,"y":-34.56,"x1":46.08,"y1":-29.472},{"type":"Q","x":36.432,"y":-42.384,"x1":41.088,"y1":-39.648},{"type":"Q","x":25.248,"y":-45.12,"x1":31.776,"y1":-45.12},{"type":"L","x":25.248,"y":-45.12},{"type":"Q","x":13.776,"y":-42.24,"x1":18.72,"y1":-45.12},{"type":"Q","x":6.096,"y":-34.176,"x1":8.832,"y1":-39.36},{"type":"Q","x":3.36,"y":-22.08,"x1":3.36,"y1":-28.992},{"type":"L","x":3.36,"y":-22.08},{"type":"Q","x":6,"y":-10.08,"x1":3.36,"y1":-15.264},{"type":"Q","x":13.392,"y":-1.968,"x1":8.64,"y1":-4.896},{"type":"Q","x":24.288,"y":0.96,"x1":18.144,"y1":0.96}]}};
+
+const O_PATH = "M1 27a25 25 0 1 0 50 0a25 25 0 1 0 -50 0ZM7.5 27a20 20 0 1 0 40 0a20 20 0 1 0 -40 0Z";
+const svg = document.getElementById('logoParts');
+const controls = document.getElementById('controls');
+const readout = document.getElementById('readout');
+const order = [
+  ['o1', 'O 1', 'O'], ['u', 'u', 'u'], ['t', 't', 't'], ['o2', 'O 2', 'O'], ['f', 'f', 'f'],
+  ['o3', 'O 3', 'O'], ['r1', 'r 1', 'r'], ['d', 'd', 'd'], ['e', 'e', 'e'], ['r2', 'r 2', 'r']
+];
+const state = { global: { scale: 1, spacing: -2, baseline: 0 } };
+order.forEach(([id, , ch]) => state[id] = ch === 'O' ? oState() : glyphState());
+
+function glyphState() {
+  return { x: 0, y: 0, scaleX: 1, scaleY: 1, slant: 0, left: 0, right: 0, top: 0, bottom: 0, counterX: 0, counterY: 0, tailX: 0, tailY: 0, spacing: 0 };
+}
+function oState() {
+  return { x: 0, y: 0, scaleX: .72, scaleY: .72, slant: 0, innerX: 7.5, innerY: 27, innerRx: 20, innerRy: 20, outerX: 26, outerY: 27, outerRx: 25, outerRy: 25, spacing: -3 };
+}
+
+const globalDefs = [
+  ['scale', 'Overall size', .7, 1.35, .005], ['spacing', 'Overall spacing', -12, 18, .5], ['baseline', 'Baseline', -24, 24, .5]
+];
+const glyphDefs = [
+  ['left', 'Left side thinner', -12, 12, .25], ['right', 'Right side thinner', -12, 12, .25],
+  ['top', 'Top thinner', -12, 12, .25], ['bottom', 'Bottom thinner', -12, 12, .25],
+  ['counterX', 'Counter / bowl L-R', -16, 16, .5], ['counterY', 'Counter / bowl up-down', -16, 16, .5],
+  ['tailX', 'Tail / ending L-R', -18, 18, .5], ['tailY', 'Tail / ending up-down', -18, 18, .5],
+  ['scaleX', 'Width stretch', .65, 1.35, .005], ['scaleY', 'Height stretch', .65, 1.35, .005],
+  ['slant', 'Slant', -20, 20, .25], ['x', 'Move X', -30, 30, .5], ['y', 'Move Y', -30, 30, .5], ['spacing', 'After spacing', -18, 18, .5]
+];
+const oDefs = [
+  ['innerX', 'Hole shift L-R', 2.5, 13, .05], ['innerY', 'Hole shift up-down', 18, 35, .05],
+  ['innerRx', 'Hole width radius', 12, 24, .05], ['innerRy', 'Hole height radius', 12, 24, .05],
+  ['outerX', 'Outer center X', 20, 32, .05], ['outerY', 'Outer center Y', 20, 34, .05],
+  ['outerRx', 'Outer width radius', 18, 29, .05], ['outerRy', 'Outer height radius', 18, 29, .05],
+  ['scaleX', 'Width stretch', .45, 1.05, .005], ['scaleY', 'Height stretch', .45, 1.05, .005],
+  ['slant', 'Slant', -20, 20, .25], ['x', 'Move X', -30, 30, .5], ['y', 'Move Y', -30, 30, .5], ['spacing', 'After spacing', -18, 18, .5]
+];
+
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function ptWeight(v) { return v * v; }
+function morphPoint(p, bbox, s, contour) {
+  const nx = clamp((p.x - bbox.x1) / (bbox.x2 - bbox.x1 || 1), 0, 1);
+  const ny = clamp((p.y - bbox.y1) / (bbox.y2 - bbox.y1 || 1), 0, 1);
+  let x = p.x;
+  let y = p.y;
+  x += s.left * ptWeight(1 - nx);
+  x -= s.right * ptWeight(nx);
+  y += s.top * ptWeight(1 - ny);
+  y -= s.bottom * ptWeight(ny);
+  x += s.counterX * ptWeight(1 - Math.abs(nx - .5) * 2) * ptWeight(1 - Math.abs(ny - .5) * 2);
+  y += s.counterY * ptWeight(1 - Math.abs(nx - .5) * 2) * ptWeight(1 - Math.abs(ny - .5) * 2);
+  x += s.tailX * ptWeight(nx) * ptWeight(ny);
+  y += s.tailY * ptWeight(nx) * ptWeight(ny);
+  if (contour >= 2) {
+    x += s.counterX;
+    y += s.counterY;
+  }
+  return { x, y };
+}
+function pathFromCommands(ch, s) {
+  const o = outlines[ch];
+  let contour = -1;
+  return o.commands.map(cmd => {
+    if (cmd.type === 'M') contour += 1;
+    const parts = [cmd.type];
+    if ('x1' in cmd) {
+      const p1 = morphPoint({ x: cmd.x1, y: cmd.y1 }, o.bbox, s, contour);
+      parts.push(`${p1.x.toFixed(3)} ${p1.y.toFixed(3)}`);
+    }
+    if ('x2' in cmd) {
+      const p2 = morphPoint({ x: cmd.x2, y: cmd.y2 }, o.bbox, s, contour);
+      parts.push(`${p2.x.toFixed(3)} ${p2.y.toFixed(3)}`);
+    }
+    if ('x' in cmd) {
+      const p = morphPoint({ x: cmd.x, y: cmd.y }, o.bbox, s, contour);
+      parts.push(`${p.x.toFixed(3)} ${p.y.toFixed(3)}`);
+    }
+    return parts.join(' ');
+  }).join('');
+}
+function oPath(s) {
+  return `M${s.outerX-s.outerRx} ${s.outerY}a${s.outerRx} ${s.outerRy} 0 1 0 ${s.outerRx*2} 0a${s.outerRx} ${s.outerRy} 0 1 0 -${s.outerRx*2} 0Z` +
+    `M${s.innerX} ${s.innerY}a${s.innerRx} ${s.innerRy} 0 1 0 ${s.innerRx*2} 0a${s.innerRx} ${s.innerRy} 0 1 0 -${s.innerRx*2} 0Z`;
+}
+function makeEl(name, attrs = {}) {
+  const node = document.createElementNS('http://www.w3.org/2000/svg', name);
+  Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+  return node;
+}
+function draw() {
+  svg.innerHTML = '';
+  let x = 20;
+  order.forEach(([id, , ch]) => {
+    const s = state[id];
+    const g = makeEl('g', {
+      transform: `translate(${x + s.x} ${state.global.baseline + s.y}) scale(${state.global.scale}) skewX(${s.slant}) scale(${s.scaleX} ${s.scaleY})`
+    });
+    const path = makeEl('path', {
+      class: 'glyph-path',
+      'fill-rule': 'evenodd',
+      d: ch === 'O' ? oPath(s) : pathFromCommands(ch, s)
+    });
+    g.appendChild(path);
+    svg.appendChild(g);
+    x += (ch === 'O' ? 52 : outlines[ch].advance) + state.global.spacing + s.spacing;
+  });
+  readout.textContent = JSON.stringify(state, null, 2);
+}
+function addControl(card, owner, key, label, min, max, step) {
+  const wrap = document.createElement('label');
+  const input = document.createElement('input');
+  const output = document.createElement('output');
+  input.type = 'range'; input.min = min; input.max = max; input.step = step; input.value = state[owner][key];
+  wrap.textContent = label; wrap.appendChild(input); wrap.appendChild(output);
+  input.addEventListener('input', () => { state[owner][key] = Number(input.value); output.textContent = input.value; draw(); });
+  output.textContent = input.value;
+  card.appendChild(wrap);
+}
+function makeCard(owner, title, defs) {
+  const card = document.createElement('section');
+  card.className = 'card';
+  card.innerHTML = `<h2>${title}</h2>`;
+  defs.forEach(([key, label, min, max, step]) => addControl(card, owner, key, label, min, max, step));
+  controls.appendChild(card);
+}
+makeCard('global', 'Global', globalDefs);
+order.forEach(([id, title, ch]) => makeCard(id, title, ch === 'O' ? oDefs : glyphDefs));
+draw();
+</script>
+</body>
+</html>

@@ -176,6 +176,10 @@ app.get('/', (req, res) => {
   res.render('index', { segments: data.segments });
 });
 
+app.get('/logo-font-lab', (req, res) => {
+  res.sendFile(path.join(__dirname, 'experiments', 'logo-font-lab.html'));
+});
+
 app.get('/gallery/:segmentId', (req, res) => {
   res.set('Cache-Control', 'no-store');
   const data    = loadData();
