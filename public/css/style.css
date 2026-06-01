@@ -118,11 +118,16 @@ button { cursor: pointer; font-family: inherit; }
 .hero {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
   padding: 0 48px;
+  overflow: hidden;
 }
 
 .hero-inner {
   text-align: center; display: flex; flex-direction: column;
   align-items: center; gap: 20px;
+  opacity: calc(1 - (var(--hero-progress, 0) * 0.32));
+  transform: translateY(calc(var(--hero-progress, 0) * -34px)) scale(calc(1 - (var(--hero-progress, 0) * 0.025)));
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+  will-change: opacity, transform;
 }
 
 /* ── OutOfOrder main title ── */
@@ -191,7 +196,12 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ─── Segments grid ─────────────────────────────────────────────────────────── */
 
-.segments { padding: 0 2px 100px; }
+.segments {
+  padding: 0 2px 100px;
+  transform: translateY(calc(26px * (1 - var(--segments-progress, 0))));
+  transition: transform 0.28s var(--ease);
+  will-change: transform;
+}
 
 .segments-grid {
   display: grid;
@@ -204,12 +214,12 @@ button { cursor: pointer; font-family: inherit; }
   display: block; position: relative;
   aspect-ratio: 3 / 4; overflow: hidden;
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+  transform: translateY(42px) scale(0.985);
+  transition: opacity 0.74s var(--ease), transform 0.74s var(--ease);
 }
 .segment-card.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .segment-card-inner { position: relative; width: 100%; height: 100%; }
@@ -434,4 +444,14 @@ button { cursor: pointer; font-family: inherit; }
   .hero          { padding: 0 20px; }
   .segments-grid { grid-template-columns: 1fr; }
   .segment-card  { aspect-ratio: 4/5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-inner,
+  .segments,
+  .segment-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

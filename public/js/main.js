@@ -1,21 +1,62 @@
 // Gallery images are visible immediately — no opacity tricks, no JS dependency
 
-// ─── Scroll-reveal for homepage segment cards ─────────────────────────────────
+// ─── Homepage scroll swoosh ───────────────────────────────────────────────────
 (function () {
   const cards = document.querySelectorAll('.reveal-card');
-  if (!cards.length) return;
+  const hero = document.querySelector('.hero');
+  const segments = document.querySelector('.segments');
+  if (!cards.length || !hero || !segments) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    cards.forEach(card => card.classList.add('is-visible'));
+    return;
+  }
+
+  let ticking = false;
+  let hasResetAtTop = window.scrollY < 80;
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function updateScrollMotion() {
+    ticking = false;
+
+    const heroHeight = Math.max(hero.offsetHeight, 1);
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const heroProgress = clamp(scrollY / (heroHeight * 0.58), 0, 1);
+    const segmentsProgress = clamp((scrollY - heroHeight * 0.52) / (heroHeight * 0.28), 0, 1);
+
+    document.documentElement.style.setProperty('--hero-progress', heroProgress.toFixed(3));
+    document.documentElement.style.setProperty('--segments-progress', segmentsProgress.toFixed(3));
+
+    if (scrollY < 80 && !hasResetAtTop) {
+      hasResetAtTop = true;
+      cards.forEach(card => card.classList.remove('is-visible'));
+    } else if (scrollY >= 80) {
+      hasResetAtTop = false;
+    }
+  }
+
+  function requestScrollMotion() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(updateScrollMotion);
+  }
 
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      // Stagger each card by 80ms
       const idx = Array.from(cards).indexOf(entry.target);
-      setTimeout(() => entry.target.classList.add('is-visible'), idx * 80);
-      io.unobserve(entry.target);
+      setTimeout(() => entry.target.classList.add('is-visible'), idx * 70);
     });
-  }, { threshold: 0.08 });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
   cards.forEach(c => io.observe(c));
+  updateScrollMotion();
+  window.addEventListener('scroll', requestScrollMotion, { passive: true });
+  window.addEventListener('resize', requestScrollMotion);
 })();
 
 
