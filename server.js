@@ -70,26 +70,32 @@ async function analyzeImage(filePath) {
   return Promise.race([
     (async () => {
       try {
-        const Vibrant = require('node-vibrant');
-        const palette = await Vibrant.from(filePath).getPalette();
-        const colors  = [];
-        for (const key of ['Vibrant', 'DarkVibrant', 'LightVibrant', 'Muted', 'DarkMuted']) {
-          if (palette[key]) colors.push(palette[key].getHex());
-        }
-        const dominant = palette.Vibrant || palette.Muted || palette.DarkMuted;
+        const stats = await sharp(filePath)
+          .rotate()
+          .resize(64, 64, { fit: 'inside', withoutEnlargement: true })
+          .stats();
+        const dominant = stats.dominant;
+        if (!dominant) return { dominantColors: [], suggestedVibe: 'neutral' };
+
+        const r = dominant.r;
+        const g = dominant.g;
+        const b = dominant.b;
+        const toHex = value => Math.max(0, Math.min(255, Math.round(value)))
+          .toString(16)
+          .padStart(2, '0');
+        const dominantHex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+
+        const lum = (r * 299 + g * 587 + b * 114) / 1000;
+        const sat = Math.max(r, g, b) - Math.min(r, g, b);
         let vibe = 'neutral';
-        if (dominant) {
-          const [r, g, b] = dominant.getRgb();
-          const lum = (r * 299 + g * 587 + b * 114) / 1000;
-          const sat = Math.max(r, g, b) - Math.min(r, g, b);
-          if (sat < 30)            vibe = lum < 80 ? 'dark' : lum < 160 ? 'monochrome' : 'minimal';
-          else if (lum < 60)       vibe = 'dark';
-          else if (r > g && r > b) vibe = lum < 140 ? 'cinematic' : 'warm';
-          else if (b > r && b > g) vibe = 'atmospheric';
-          else if (g > r && g > b) vibe = 'earthy';
-          else                     vibe = 'urban';
-        }
-        return { dominantColors: colors.slice(0, 3), suggestedVibe: vibe };
+        if (sat < 30)            vibe = lum < 80 ? 'dark' : lum < 160 ? 'monochrome' : 'minimal';
+        else if (lum < 60)       vibe = 'dark';
+        else if (r > g && r > b) vibe = lum < 140 ? 'cinematic' : 'warm';
+        else if (b > r && b > g) vibe = 'atmospheric';
+        else if (g > r && g > b) vibe = 'earthy';
+        else                     vibe = 'urban';
+
+        return { dominantColors: [dominantHex], suggestedVibe: vibe };
       } catch {
         return { dominantColors: [], suggestedVibe: 'neutral' };
       }

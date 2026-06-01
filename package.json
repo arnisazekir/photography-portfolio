@@ -19,12 +19,9 @@
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "multer": "^2.1.1",
-    "node-vibrant": "^3.1.6",
-    "sharp": "^0.33.3",
-    "uuid": "^9.0.1"
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
-    "@railway/cli": "^4.66.0",
     "nodemon": "^3.1.0"
   }
 }
