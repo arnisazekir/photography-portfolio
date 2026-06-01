@@ -1,7 +1,7 @@
 /* ─── Fonts ─────────────────────────────────────────────────────────────────── */
 /* Cormorant Garamond — high-contrast serif, closest free match to The Seasons  */
 /* Inter — clean minimal sans for body, subtitle, UI                            */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Inter:wght@200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Inter:wght@200;300;400&family=Jost:wght@300;400;500&display=swap');
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +23,7 @@
 
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-display: 'Bodoni Moda', Georgia, serif;
-  --font: 'Inter', system-ui, -apple-system, sans-serif;
+  --font: 'Jost', system-ui, -apple-system, sans-serif;
 
   --radius: 2px;
   --ease:   cubic-bezier(0.22, 1, 0.36, 1);
@@ -126,23 +126,34 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* ── OutOfOrder main title ── */
+.logo {
+  font-family: 'Jost', sans-serif;
+  font-weight: 400;
+  font-size: 96px;
+  color: #FAF9F6;
+
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.logo svg {
+  width: 0.72em;
+  height: 0.72em;
+  vertical-align: baseline;
+  margin: 0 -0.03em;
+}
+
+.normal {
+  letter-spacing: -0.03em;
+}
+
+.tight {
+  letter-spacing: -0.08em;
+}
+
 .hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5.5vw, 72px);
-  font-optical-sizing: none;
-  font-variation-settings: "opsz" 10;
-  letter-spacing: 0.05em;
   line-height: 1;
-}
-/* Out + Order → regular, full white */
-.title-out, .title-order {
-  font-weight: 400;
-  color: var(--white);
-}
-/* of → same weight but dimmed for contrast */
-.title-of {
-  font-weight: 400;
-  color: var(--gray-mid);
+  justify-content: center;
 }
 
 /* ── "personal visual portfolio" subtitle ── */
@@ -422,4 +433,3 @@ button { cursor: pointer; font-family: inherit; }
   .segments-grid { grid-template-columns: 1fr; }
   .segment-card  { aspect-ratio: 4/5; }
 }
-
