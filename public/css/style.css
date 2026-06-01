@@ -421,6 +421,7 @@ button { cursor: pointer; font-family: inherit; }
 @media (max-width: 768px) {
   .site-header   { padding: 0 20px; }
   .hero          { padding: 0 24px; }
+  .logo          { font-size: clamp(44px, 18vw, 72px); }
   .segments      { padding: 0 2px 80px; }
   .segments-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
   .gallery-hero  { padding: 86px 20px 24px; }
@@ -430,6 +431,7 @@ button { cursor: pointer; font-family: inherit; }
   .lightbox-next { right: 4px; }
 }
 @media (max-width: 480px) {
+  .hero          { padding: 0 20px; }
   .segments-grid { grid-template-columns: 1fr; }
   .segment-card  { aspect-ratio: 4/5; }
 }
