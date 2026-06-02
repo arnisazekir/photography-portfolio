@@ -138,9 +138,20 @@ button { cursor: pointer; font-family: inherit; }
   font-size: 96px;
   letter-spacing: -0.055em;
   color: #FAF9F6;
+  -webkit-text-fill-color: #FAF9F6;
 
   display: inline-flex;
   align-items: baseline;
+}
+
+.logo,
+.logo * {
+  color: #FAF9F6 !important;
+}
+
+.f-fix {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit;
 }
 
 .hero-title {
@@ -155,7 +166,8 @@ button { cursor: pointer; font-family: inherit; }
   font-weight: 300;
   letter-spacing: 0.34em;
   text-transform: lowercase;
-  color: var(--gray-mid);    /* same gray as "of" */
+  color: rgba(250,249,246,0.58);
+  -webkit-text-fill-color: rgba(250,249,246,0.58);
 }
 
 .hero-line {
