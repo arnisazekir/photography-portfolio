@@ -166,8 +166,8 @@ button { cursor: pointer; font-family: inherit; }
   font-weight: 300;
   letter-spacing: 0.34em;
   text-transform: lowercase;
-  color: rgba(250,249,246,0.58);
-  -webkit-text-fill-color: rgba(250,249,246,0.58);
+  color: var(--gray-mid);
+  -webkit-text-fill-color: var(--gray-mid);
 }
 
 .hero-line {
