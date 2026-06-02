@@ -143,23 +143,6 @@ button { cursor: pointer; font-family: inherit; }
   align-items: baseline;
 }
 
-.f-fix {
-  position: relative;
-  display: inline-block;
-}
-
-.f-fix::after {
-  content: "";
-  position: absolute;
-  left: 0.135em;
-  top: 0.455em;
-  width: 0.038em;
-  height: 0.05em;
-  background: currentColor;
-  border-radius: 0.004em;
-  pointer-events: none;
-}
-
 .hero-title {
   line-height: 1;
   justify-content: center;
