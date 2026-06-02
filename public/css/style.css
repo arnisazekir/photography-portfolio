@@ -1,7 +1,7 @@
 /* ─── Fonts ─────────────────────────────────────────────────────────────────── */
 /* Cormorant Garamond — high-contrast serif, closest free match to The Seasons  */
 /* Inter — clean minimal sans for body, subtitle, UI                            */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Inter:wght@200;300;400&family=Jost:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Inter:wght@200;300;400&family=Jost:wght@300;400;500&family=Red+Rose:wght@300&display=swap');
 
 /* ─── Reset ─────────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,28 +132,32 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ── OutOfOrder main title ── */
 .logo {
-  font-family: 'Jost', sans-serif;
-  font-weight: 400;
+  position: relative;
+  font-family: 'Red Rose', serif;
+  font-weight: 300;
   font-size: 96px;
+  letter-spacing: -0.055em;
   color: #FAF9F6;
 
   display: inline-flex;
   align-items: baseline;
 }
 
-.logo svg {
-  width: 0.72em;
-  height: 0.72em;
-  vertical-align: baseline;
-  margin: 0 -0.03em;
+.f-fix {
+  position: relative;
+  display: inline-block;
 }
 
-.normal {
-  letter-spacing: -0.03em;
-}
-
-.tight {
-  letter-spacing: -0.08em;
+.f-fix::after {
+  content: "";
+  position: absolute;
+  left: 0.135em;
+  top: 0.455em;
+  width: 0.038em;
+  height: 0.05em;
+  background: currentColor;
+  border-radius: 0.004em;
+  pointer-events: none;
 }
 
 .hero-title {
