@@ -764,15 +764,6 @@
           "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780174362/outoforder/set-the-tone/DSC09789.jpg"
         },
         {
-          "filename": "DSC09931.JPG",
-          "path": "/uploads/photos/set-the-tone/DSC09931.JPG",
-          "order": 21,
-          "dominantColors": [],
-          "suggestedVibe": "tonal",
-          "thumbPath": "/uploads/thumbs/set-the-tone/DSC09931.JPG",
-          "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780174365/outoforder/set-the-tone/DSC09931.jpg"
-        },
-        {
           "filename": "DSC09775.JPG",
           "path": "/uploads/photos/set-the-tone/DSC09775.JPG",
           "order": 19,
@@ -785,7 +776,7 @@
           "filename": "1780342205926-54353.jpg",
           "path": "/uploads/photos/set-the-tone/1780342205926-54353.jpg",
           "thumbPath": "/uploads/thumbs/set-the-tone/1780342205926-54353.jpg",
-          "order": 25,
+          "order": 26,
           "dominantColors": [
             "#080808"
           ],
@@ -796,7 +787,7 @@
           "filename": "1780342778052-361966.jpg",
           "path": "/uploads/photos/set-the-tone/1780342778052-361966.jpg",
           "thumbPath": "/uploads/thumbs/set-the-tone/1780342778052-361966.jpg",
-          "order": 22,
+          "order": 23,
           "dominantColors": [
             "#080808"
           ],
@@ -815,26 +806,25 @@
           "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780343218/outoforder/set-the-tone/1780343169946-668418.jpg"
         },
         {
-          "filename": "1780692602672-440970.jpg",
-          "path": "/uploads/photos/set-the-tone/1780692602672-440970.jpg",
-          "thumbPath": "/uploads/thumbs/set-the-tone/1780692602672-440970.jpg",
+          "filename": "1780694434375-644605.jpg",
+          "path": "/uploads/photos/set-the-tone/1780694434375-644605.jpg",
+          "thumbPath": "/uploads/thumbs/set-the-tone/1780694434375-644605.jpg",
           "order": 24,
           "dominantColors": [
             "#080808"
           ],
           "suggestedVibe": "dark",
-          "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780692604/outoforder/set-the-tone/1780692602672-440970.jpg"
+          "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780694437/outoforder/set-the-tone/1780694434375-644605.jpg"
         },
         {
-          "filename": "1780694434375-644605.jpg",
-          "path": "/uploads/photos/set-the-tone/1780694434375-644605.jpg",
-          "thumbPath": "/uploads/thumbs/set-the-tone/1780694434375-644605.jpg",
-          "order": 23,
+          "filename": "1780695086729-131615.jpg",
+          "path": "/uploads/photos/set-the-tone/1780695086729-131615.jpg",
+          "thumbPath": "/uploads/thumbs/set-the-tone/1780695086729-131615.jpg",
+          "order": 21,
           "dominantColors": [
             "#080808"
           ],
-          "suggestedVibe": "dark",
-          "cloudinaryUrl": "https://res.cloudinary.com/dt5xvym9b/image/upload/v1780694437/outoforder/set-the-tone/1780694434375-644605.jpg"
+          "suggestedVibe": "dark"
         }
       ]
     }
