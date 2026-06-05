@@ -346,8 +346,14 @@ app.post('/admin/api/upload', requireAdmin, (req, res) => {
       console.error('Thumb generation failed:', e.message);
     }
 
-    const analysis  = await analyzeImage(absPath);
-    const maxOrder  = seg.images.reduce((m, i) => Math.max(m, i.order), 0);
+    const analysis = await analyzeImage(absPath);
+
+    // Reload data after all async work to avoid overwriting concurrent uploads
+    const freshData = loadData();
+    const freshSeg  = freshData.segments.find(s => s.id === req.body.segmentId);
+    if (!freshSeg) return res.status(404).json({ error: 'Segment not found' });
+
+    const maxOrder  = freshSeg.images.reduce((m, i) => Math.max(m, i.order), 0);
     const imgRecord = {
       filename: req.file.filename,
       path:     relPath,
@@ -360,20 +366,20 @@ app.post('/admin/api/upload', requireAdmin, (req, res) => {
     // Upload to Cloudinary in background — non-blocking so admin upload stays fast
     if (process.env.CLOUDINARY_CLOUD_NAME) {
       cloudinary.uploader.upload(absPath, {
-        folder:    'outoforder/' + seg.sourceFolder,
+        folder:    'outoforder/' + freshSeg.sourceFolder,
         public_id: path.parse(req.file.filename).name,
         overwrite: false
       }).then(result => {
         imgRecord.cloudinaryUrl = result.secure_url;
         const d = loadData();
-        const s = d.segments.find(x => x.id === seg.id);
+        const s = d.segments.find(x => x.id === freshSeg.id);
         const i = s && s.images.find(x => x.filename === imgRecord.filename);
         if (i) { i.cloudinaryUrl = result.secure_url; saveData(d); }
       }).catch(e => console.error('Cloudinary upload failed:', e.message));
     }
 
-    seg.images.push(imgRecord);
-    saveData(data);
+    freshSeg.images.push(imgRecord);
+    saveData(freshData);
     res.json({ success: true, image: imgRecord, analysis });
   });
 });
