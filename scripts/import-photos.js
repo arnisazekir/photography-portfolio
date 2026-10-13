@@ -15,7 +15,7 @@ const path = require('path');
 
 // ─── CONFIG ──────────────────────────────────────────────────────────────────
 // Change SOURCE_BASE if your original folders live somewhere else.
-const SOURCE_BASE = path.resolve(__dirname, '..', '..'); // /Users/you/Documents/Programs
+const SOURCE_BASE = path.resolve(__dirname, '..'); // photography-portfolio/ (source folders now live here)
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const UPLOADS_BASE = path.join(PROJECT_ROOT, 'public', 'uploads', 'photos');
@@ -24,7 +24,7 @@ const DATA_FILE    = path.join(PROJECT_ROOT, 'data', 'portfolio.json');
 // Mapping: sourceFolder → { id, name, description, vibe }
 const SEGMENT_DEFS = [
   {
-    sourceFolder: 'bnw ',          // note trailing space (actual folder name)
+    sourceFolder: 'bnw',
     internalFolder: 'bnw',         // clean name used inside this project
     id: 'monochrome-studies',
     name: 'Monochrome Studies',

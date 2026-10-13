@@ -7,3 +7,10 @@ public/uploads/photos/
 
 # Thumbnails ARE committed — they power the deployed site (3.7 MB total)
 # public/uploads/thumbs/
+
+# Original camera files — kept locally only, the site uses thumbnails + Cloudinary
+/bnw/
+/dark forest/
+/urban/
+/stormtrooper/
+/set the tone/
