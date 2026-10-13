@@ -42,6 +42,12 @@
       <div class="admin-flash admin-flash--err"><%= error %></div>
     <% } %>
 
+    <% if (sync.lastError) { %>
+      <div class="admin-flash admin-flash--err">GitHub backup failed — recent changes may not survive a restart. <%= sync.lastError %></div>
+    <% } else if (!sync.enabled && sync.hosted) { %>
+      <div class="admin-flash admin-flash--err">GitHub backup is off (GITHUB_TOKEN not set) — changes made here are not saved permanently.</div>
+    <% } %>
+
     <!-- Toast notification (JS-driven) -->
     <div class="toast" id="toast"></div>
 

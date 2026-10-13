@@ -20,12 +20,15 @@ CLOUDINARY_API_SECRET=
 SESSION_SECRET=
 ADMIN_PASSWORD=
 PORT=3000
+GITHUB_TOKEN=
 ```
 Cloudinary upload is skipped gracefully if `CLOUDINARY_CLOUD_NAME` is not set.
+GitHub sync is skipped gracefully if `GITHUB_TOKEN` is not set (leave it unset locally).
 
 ## Project Structure
 ```
 server.js               — all routes + business logic
+github-sync.js          — commits admin changes to GitHub, restores them on boot
 data/portfolio.json     — segments + image metadata (source of truth)
 views/
   index.ejs             — homepage (segment grid)
@@ -70,6 +73,15 @@ Source image folders live inside the project root: `/Users/arnisa/Documents/Prog
 2. sharp generates thumbnail → `public/uploads/thumbs/{sourceFolder}/`
 3. Cloudinary upload runs in background (non-blocking) → `cloudinaryUrl` saved to portfolio.json
 4. Gallery serves `thumbPath` for grid, `cloudinaryUrl` for full-res (fallback to local `path`)
+
+## Admin Persistence (GitHub sync)
+Render's disk resets to the last deploy on every restart, so admin changes are committed to the repo:
+1. `saveData()` calls `githubSync.scheduleSync()` → debounced 8 s → one commit with `portfolio.json` + changed thumbnails
+2. Commit message carries `[skip render]` so an upload does not trigger a redeploy (the change is already live)
+3. On boot, Render only (`RENDER` env), `restoreFromGitHub()` pulls the latest data + thumbnails before the server listens
+4. Needs `GITHUB_TOKEN` in Render (fine-grained token, Contents: Read and write on this repo)
+
+The live site is the source of truth for photos — `git pull` before working locally or pushing code.
 
 ## Admin Routes
 - `GET  /admin/login` — login page

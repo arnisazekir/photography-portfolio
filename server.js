@@ -7,7 +7,9 @@ const multer      = require('multer');
 const sharp       = require('sharp');
 const path        = require('path');
 const fs          = require('fs');
+const os          = require('os');
 const cloudinary  = require('cloudinary').v2;
+const githubSync  = require('./github-sync');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -33,12 +35,14 @@ function saveData(data) {
   const tmp = DATA_FILE + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2), 'utf8');
   fs.renameSync(tmp, DATA_FILE);
+  githubSync.scheduleSync(); // no-op unless GITHUB_TOKEN is set
 }
 
 // ─── Image helpers ────────────────────────────────────────────────────────────
 
 const THUMB_MAX_W = 900;
 const FULL_MAX_W  = 2400; // cap originals so the server doesn't serve 30 MB RAW conversions
+const CLOUD_MAX_W = 3000; // resize before Cloudinary upload — free plan rejects files over 10 MB
 
 async function processUpload(srcAbs, folder, filename) {
   const thumbDir = path.join(PUB, 'uploads', 'thumbs', folder);
@@ -54,6 +58,27 @@ async function processUpload(srcAbs, folder, filename) {
     .toFile(thumbAbs);
 
   return thumbRel;
+}
+
+async function uploadToCloudinary(srcAbs, folder, filename) {
+  const publicId = path.parse(filename).name;
+  const tmp = path.join(os.tmpdir(), publicId + '_upload.jpg');
+  await sharp(srcAbs)
+    .rotate()
+    .resize(CLOUD_MAX_W, null, { withoutEnlargement: true })
+    .jpeg({ quality: 90, progressive: true })
+    .toFile(tmp);
+
+  try {
+    const result = await cloudinary.uploader.upload(tmp, {
+      folder:    'outoforder/' + folder,
+      public_id: publicId,
+      overwrite: false
+    });
+    return result.secure_url;
+  } finally {
+    if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+  }
 }
 
 function deleteImageFiles(img) {
@@ -216,7 +241,8 @@ app.get('/admin', requireAdmin, (req, res) => {
   res.render('admin', {
     segments: data.segments,
     flash: req.flash('success'),
-    error: req.flash('error')
+    error: req.flash('error'),
+    sync: githubSync.status
   });
 });
 
@@ -365,16 +391,12 @@ app.post('/admin/api/upload', requireAdmin, (req, res) => {
 
     // Upload to Cloudinary in background — non-blocking so admin upload stays fast
     if (process.env.CLOUDINARY_CLOUD_NAME) {
-      cloudinary.uploader.upload(absPath, {
-        folder:    'outoforder/' + freshSeg.sourceFolder,
-        public_id: path.parse(req.file.filename).name,
-        overwrite: false
-      }).then(result => {
-        imgRecord.cloudinaryUrl = result.secure_url;
+      uploadToCloudinary(absPath, freshSeg.sourceFolder, req.file.filename).then(url => {
+        imgRecord.cloudinaryUrl = url;
         const d = loadData();
         const s = d.segments.find(x => x.id === freshSeg.id);
         const i = s && s.images.find(x => x.filename === imgRecord.filename);
-        if (i) { i.cloudinaryUrl = result.secure_url; saveData(d); }
+        if (i) { i.cloudinaryUrl = url; saveData(d); }
       }).catch(e => console.error('Cloudinary upload failed:', e.message));
     }
 
@@ -458,7 +480,10 @@ app.use((req, res) => res.status(404).render('404', { message: 'Page not found' 
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 
-app.listen(PORT, () => {
-  console.log(`Portfolio → http://localhost:${PORT}`);
-  console.log(`Admin     → http://localhost:${PORT}/admin`);
+// Pull any admin changes committed since the last deploy before serving (Render only)
+githubSync.restoreFromGitHub().finally(() => {
+  app.listen(PORT, () => {
+    console.log(`Portfolio → http://localhost:${PORT}`);
+    console.log(`Admin     → http://localhost:${PORT}/admin`);
+  });
 });
